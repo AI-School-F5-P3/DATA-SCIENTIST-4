@@ -13,6 +13,8 @@ def load_model():
 model = load_model()
 
 def predict_stroke(request):
+    risk = None # Inicializa 'risk' antes de cualquier lógica
+    
     if request.method == 'POST':
         form = StrokePredictionForm(request.POST)
         if form.is_valid():
@@ -25,14 +27,17 @@ def predict_stroke(request):
                 'gender': [form.cleaned_data['gender']],
                 'ever_married': [form.cleaned_data['ever_married']],
                 'work_type': [form.cleaned_data['work_type']],
-                'Residence_type': [form.cleaned_data['residence_type']],
+                'Residence_type': [form.cleaned_data['Residence_type']],
                 'smoking_status': [form.cleaned_data['smoking_status']]
             })
 
-            prediction = model.predict(input_data)
-            risk = "at risk" if prediction[0] == 1 else "not at risk"
+            try:
+                prediction = model.predict(input_data)
+                risk = "at risk" if prediction[0] == 1 else "not at risk"
+            except Exception as e:
+                risk = f"Error en la predicción: {e}"
             return render(request, 'stroke_app/prediction_form.html', {'form': form, 'risk': risk})
     else:
         form = StrokePredictionForm()
     
-    return render(request, 'stroke_app/prediction_form.html', {'form': form})
+    return render(request, 'stroke_app/prediction_form.html', {'form': form, 'risk':risk})

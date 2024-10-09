@@ -9,5 +9,5 @@ class StrokePredictionForm(forms.Form):
     gender = forms.ChoiceField(choices=[('Male', 'Male'), ('Female', 'Female')], widget=forms.Select(attrs={'class': 'form-control'}))
     ever_married = forms.ChoiceField(choices=[('Yes', 'Yes'), ('No', 'No')], widget=forms.Select(attrs={'class': 'form-control'}))
     work_type = forms.ChoiceField(choices=[('Private', 'Private'), ('Self-employed', 'Self-employed'), ('Govt_job', 'Government Job'), ('children', 'Children'), ('Never_worked', 'Never Worked')], widget=forms.Select(attrs={'class': 'form-control'}))
-    residence_type = forms.ChoiceField(choices=[('Urban', 'Urban'), ('Rural', 'Rural')], widget=forms.Select(attrs={'class': 'form-control'}))
+    Residence_type = forms.ChoiceField(choices=[('Urban', 'Urban'), ('Rural', 'Rural')], widget=forms.Select(attrs={'class': 'form-control'}))
     smoking_status = forms.ChoiceField(choices=[('formerly smoked', 'Formerly Smoked'), ('never smoked', 'Never Smoked'), ('smokes', 'Smokes'), ('Unknown', 'Unknown')], widget=forms.Select(attrs={'class': 'form-control'}))
