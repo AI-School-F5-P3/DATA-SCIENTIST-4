@@ -16,37 +16,31 @@
         <div class="mb-3 p-3 bg-light border rounded">
             <h5 class="text-secondary fs-3">Patient Information</h5>
             <div class="mb-3">
-                <label for="age" class="form-label fw-bold">Age</label>
-                <input type="range" class="form-range" min="0" max="100" id="age" name="age" value="50" oninput="this.nextElementSibling.value = this.value">
-                <output class="contador">50</output>
+                <label for="{{ form.age.id_for_label }}" class="form-label fw-bold">Age</label>
+                {{ form.age }}
+                <output class="contador">50</output> <!-- Ajusta esto si es necesario, ya que depende del widget del campo -->
             </div>
 
             <div class="mb-3">
-                <label for="avg_glucose_level" class="form-label fw-bold">Avg Glucose Level</label>
-                <input type="range" class="form-range" min="50" max="250" id="avg_glucose_level" name="avg_glucose_level" value="150" oninput="this.nextElementSibling.value = this.value">
+                <label for="{{ form.avg_glucose_level.id_for_label }}" class="form-label fw-bold">Avg Glucose Level</label>
+                {{ form.avg_glucose_level }}
                 <output class="contador">150</output>
             </div>
 
             <div class="mb-3">
-                <label for="bmi" class="form-label fw-bold">BMI</label>
-                <input type="range" class="form-range" min="10" max="50" id="bmi" name="bmi" value="30" oninput="this.nextElementSibling.value = this.value">
+                <label for="{{ form.bmi.id_for_label }}" class="form-label fw-bold">BMI</label>
+                {{ form.bmi }}
                 <output class="contador">30</output>
             </div>
 
             <div class="mb-3">
-                <label for="hypertension" class="form-label fw-bold">Hypertension</label>
-                <select id="hypertension" name="hypertension" class="form-select">
-                    <option value="Yes" selected>Yes</option>
-                    <option value="No">No</option>
-                </select>
+                <label for="{{ form.hypertension.id_for_label }}" class="form-label fw-bold">Hypertension</label>
+                {{ form.hypertension }}
             </div>
 
             <div class="mb-3">
-                <label for="heart_disease" class="form-label fw-bold">Heart Disease</label>
-                <select id="heart_disease" name="heart_disease" class="form-select">
-                    <option value="Yes" selected>Yes</option>
-                    <option value="No">No</option>
-                </select>
+                <label for="{{ form.heart_disease.id_for_label }}" class="form-label fw-bold">Heart Disease</label>
+                {{ form.heart_disease }}
             </div>
         </div>
     </div>
@@ -56,48 +50,28 @@
         <div class="mb-3 p-3 bg-light border rounded">
             <h5 class="text-secondary fs-3">Lifestyle Information</h5>
             <div class="mb-3">
-                <label for="gender" class="form-label fw-bold">Gender</label>
-                <select id="gender" name="gender" class="form-select">
-                    <option value="Female" selected>Female</option>
-                    <option value="Male">Male</option>
-                    <option value="Other">Other</option>
-                </select>
+                <label for="{{ form.gender.id_for_label }}" class="form-label fw-bold">Gender</label>
+                {{ form.gender }}
             </div>
 
             <div class="mb-3">
-                <label for="ever_married" class="form-label fw-bold">Ever Married</label>
-                <select id="ever_married" name="ever_married" class="form-select">
-                    <option value="Yes" selected>Yes</option>
-                    <option value="No">No</option>
-                </select>
+                <label for="{{ form.ever_married.id_for_label }}" class="form-label fw-bold">Ever Married</label>
+                {{ form.ever_married }}
             </div>
 
             <div class="mb-3">
-                <label for="work_type" class="form-label fw-bold">Work Type</label>
-                <select id="work_type" name="work_type" class="form-select">
-                    <option value="Private" selected>Private</option>
-                    <option value="Self-employed">Self-employed</option>
-                    <option value="Govt_job">Government Job</option>
-                    <option value="children">Children</option>
-                    <option value="Never_worked">Never Worked</option>
-                </select>
+                <label for="{{ form.work_type.id_for_label }}" class="form-label fw-bold">Work Type</label>
+                {{ form.work_type }}
             </div>
 
             <div class="mb-3">
-                <label for="Residence_type" class="form-label fw-bold">Residence Type</label>
-                <select id="Residence_type" name="Residence_type" class="form-select">
-                    <option value="Urban" selected>Urban</option>
-                    <option value="Rural">Rural</option>
-                </select>
+                <label for="{{ form.Residence_type.id_for_label }}" class="form-label fw-bold">Residence Type</label>
+                {{ form.Residence_type }}
             </div>
 
             <div class="mb-3">
-                <label for="smoking_status" class="form-label fw-bold">Smoking Status</label>
-                <select id="smoking_status" name="smoking_status" class="form-select">
-                    <option value="Formerly Smoked" selected>Formerly Smoked</option>
-                    <option value="Never Smoked">Never Smoked</option>
-                    <option value="Smokes">Smokes</option>
-                </select>
+                <label for="{{ form.smoking_status.id_for_label }}" class="form-label fw-bold">Smoking Status</label>
+                {{ form.smoking_status }}
             </div>
         </div>
     </div>

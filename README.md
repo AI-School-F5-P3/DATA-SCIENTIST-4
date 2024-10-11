@@ -1,5 +1,37 @@
 # 🏥 Proyecto Data Scientist: Aprendizaje Supervisado
 
+### Estructura del proyecto v1
+
+stroke_prediction_project/
+├── manage.py
+├── stroke_prediction_project/
+│   ├── __init__.py
+│   ├── settings.py
+│   ├── urls.py
+│   ├── wsgi.py
+├── stroke_app/
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── forms.py
+│   ├── models.py
+│   ├── tests.py
+│   ├── urls.py
+│   ├── views.py
+│   ├── templates/
+│   │   └── stroke_app/
+│   │       ├── base.html
+│   │       └── prediction_form.html
+│   └── static/
+│       └── stroke_app/
+│           ├── css/
+│           │   └── style.css
+│           └── images/
+│               └── heart.webp
+├── requirements.txt
+└── Notebooks/
+    └── finalmodel.pickle
+
 ## 📋 Planteamiento
 El hospital **F5** lleva un tiempo recogiendo datos cruzados que relacionan diversos indicadores de la vida y estado de salud de algunos pacientes frente a la variable de si han sufrido un **ictus** o no lo han hecho. Ahora han puesto esos datos en manos del departamento de análisis de datos para elaborar un prototipo de programa con inteligencia artificial que, de manera desatendida y como criba previa a una consulta con un doctor, pida por línea de comandos los datos necesarios y devuelva si el paciente está en riesgo de sufrir un ictus. Para validar el proyecto, será necesario también un informe de su rendimiento.
 

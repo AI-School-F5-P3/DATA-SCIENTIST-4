@@ -154,6 +154,8 @@ celerybeat.pid
 # SageMath parsed files
 *.sage.py
 
+# Ignore pycache
+__pycache__/
 
 
 
