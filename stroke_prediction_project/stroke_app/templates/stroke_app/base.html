@@ -48,5 +48,21 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function updateAge(value) {
+            document.getElementById('id_age').value = value;
+            document.getElementById('age_output').innerText = value;
+        }
+    
+        function updateGlucose(value) {
+            document.getElementById('id_avg_glucose_level').value = value;
+            document.getElementById('glucose_output').innerText = value;
+        }
+    
+        function updateBMI(value) {
+            document.getElementById('id_bmi').value = value;
+            document.getElementById('bmi_output').innerText = value;
+        }
+    </script>    
 </body>
 </html>

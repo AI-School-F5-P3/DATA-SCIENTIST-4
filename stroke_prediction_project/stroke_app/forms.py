@@ -54,7 +54,7 @@ class StrokePredictionForm(forms.Form):
         widget=forms.Select(attrs={'class': 'form-select'}),
         label="Work Type"
     )
-    Residence_type = forms.ChoiceField(
+    residence_type = forms.ChoiceField(
         choices=[('Urban', 'Urban'), ('Rural', 'Rural')], 
         widget=forms.Select(attrs={'class': 'form-select'}),
         label="Residence Type"

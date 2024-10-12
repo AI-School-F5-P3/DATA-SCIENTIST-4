@@ -1,7 +1,7 @@
 import pickle
 import pandas as pd
 from django.shortcuts import render
-from .forms import StrokePredictionForm
+from stroke_app.forms import StrokePredictionForm
 import os
 from django.conf import settings
 
@@ -13,7 +13,6 @@ def load_model():
 model = load_model()
 
 def predict_stroke(request):
-    risk = None # Inicializa 'risk' antes de cualquier lógica
     
     if request.method == 'POST':
         form = StrokePredictionForm(request.POST)
@@ -27,7 +26,7 @@ def predict_stroke(request):
                 'gender': [form.cleaned_data['gender']],
                 'ever_married': [form.cleaned_data['ever_married']],
                 'work_type': [form.cleaned_data['work_type']],
-                'Residence_type': [form.cleaned_data['Residence_type']],
+                'residence_type': [form.cleaned_data['residence_type']],
                 'smoking_status': [form.cleaned_data['smoking_status']]
             })
 
@@ -40,4 +39,4 @@ def predict_stroke(request):
     else:
         form = StrokePredictionForm()
     
-    return render(request, 'stroke_app/prediction_form.html', {'form': form, 'risk':risk})
+    return render(request, 'stroke_app/prediction_form.html', {'form': form})
