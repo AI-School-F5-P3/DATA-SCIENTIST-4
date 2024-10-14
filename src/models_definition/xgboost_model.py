@@ -246,16 +246,17 @@ def generate_report(model, X_train, X_test, y_train, y_test, X, y, feature_names
 def train_and_evaluate_model(X_train, X_test, y_train, y_test, class_weight_dict):
     try:
         param_grid = {
-            'max_depth': [3, 5, 7],
-            'learning_rate': [0.01, 0.1, 0.3],
-            'gamma': [0, 0.1, 0.2],
-            'subsample': [0.8, 0.9, 1.0],
-            'colsample_bytree': [0.8, 0.9, 1.0]
+            'max_depth': [3, 5],
+            'learning_rate': [0.01],
+            'gamma': [0],
+            'subsample': [0.8],
+            'colsample_bytree': [0.8],
+            'scale_pos_weight': [class_weight_dict[0] / class_weight_dict[1]]  # Para manejar desbalance
         }
 
         base_model = XGBClassifier(random_state=42, use_label_encoder=False, eval_metric='logloss')
         grid_search = GridSearchCV(base_model, param_grid, cv=5, scoring='accuracy', n_jobs=-1)
-        grid_search.fit(X_train, y_train, sample_weight=compute_sample_weight(class_weight_dict, y_train))
+        grid_search.fit(X_train, y_train)
 
         best_model = grid_search.best_estimator_
         y_pred_proba = best_model.predict_proba(X_test)[:, 1]

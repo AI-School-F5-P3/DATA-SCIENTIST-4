@@ -1,0 +1,45 @@
+Informe Detallado del Modelo XGBoost para la Predicción de Ictus
+==================================================
+
+1. Resumen del Conjunto de Datos
+Total de muestras: 4981
+Características: 10
+Distribución de clases: {0: 4733, 1: 248}
+
+2. Mejor Umbral Encontrado: 0.10
+
+3. Hiperparámetros del Mejor Modelo
+- colsample_bytree: 0.8
+- gamma: 0
+- learning_rate: 0.01
+- max_depth: 3
+- scale_pos_weight: 0.05239805620114093
+- subsample: 0.8
+
+4. Métricas del Modelo
+- Accuracy: 0.8200
+- Precision: 0.8113
+- Recall: 0.8344
+- F1: 0.8227
+- Auc_roc: 0.9015
+
+5. Validación Cruzada
+Scores de validación cruzada: [0.50033003 0.50033003 0.5        0.5        0.5       ]
+Precisión promedio: 0.5001
+
+6. Detección de Overfitting
+Precisión en entrenamiento: 0.5001
+Precisión en prueba: 0.4995
+Diferencia (Overfitting): 0.0007
+
+7. Importancia de las Características
+- age: 0.2455
+- avg_glucose_level: 0.1255
+- heart_disease: 0.1225
+- gender: 0.1208
+- smoking_status: 0.0973
+- ever_married: 0.0835
+- work_type: 0.0649
+- hypertension: 0.0610
+- Residence_type: 0.0500
+- bmi: 0.0291
