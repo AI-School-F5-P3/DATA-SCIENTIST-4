@@ -18,7 +18,7 @@ class StrokePredictionForm(forms.Form):
     )
     bmi = forms.FloatField(
         min_value=10, 
-        max_value=40, 
+        max_value=60, 
         widget=RangeInput(attrs={'class': 'form-range', 'value': 25, 'oninput': 'this.nextElementSibling.value = this.value', 'min': 10, 'max': 60}),
         label="BMI"
     )

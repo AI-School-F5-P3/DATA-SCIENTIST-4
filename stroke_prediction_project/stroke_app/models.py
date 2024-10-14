@@ -35,7 +35,7 @@ class StrokePrediction(models.Model):
     work_type = models.CharField(max_length=50, choices=WORK_TYPE_CHOICES)
     residence_type = models.CharField(max_length=50, choices=RESIDENCE_TYPE_CHOICES)
     smoking_status = models.CharField(max_length=20, choices=SMOKING_STATUS_CHOICES)
-    stroke_risk = models.CharField(max_length=10, choices=[('yes', 'Yes'), ('no', 'No')], default='no') 
+    stroke_risk = models.CharField(max_length=10, blank=True, null=True) 
     date_submitted = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
