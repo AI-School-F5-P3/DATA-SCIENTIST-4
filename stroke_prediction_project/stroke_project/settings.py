@@ -12,6 +12,13 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+import pymysql
+# Cargar variables de entorno desde un archivo .env
+load_dotenv()
+
+# Configurar pymysql como el conector de MySQL para Django
+pymysql.install_as_MySQLdb()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-2+f*qokq&u9@scu55q2%e^-ny5#!t&h4ht#e#mki7*k2nb85=v'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -79,8 +86,12 @@ WSGI_APPLICATION = 'stroke_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.getenv('DB_NAME'),  # Lee el nombre de la base de datos desde .env
+        'USER': os.getenv('DB_USER'),  # Lee el usuario desde .env
+        'PASSWORD': os.getenv('DB_PASSWORD'),  # Lee la contraseña desde .env
+        'HOST': os.getenv('DB_HOST'),  # Lee el host desde .env
+        'PORT': os.getenv('DB_PORT'),  # Lee el puerto desde .env
     }
 }
 
