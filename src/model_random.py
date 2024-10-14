@@ -2,28 +2,17 @@ import pandas as pd
 import os
 import sys
 from sklearn.model_selection import train_test_split
-from catboost import CatBoostClassifier
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report, confusion_matrix
+from sklearn.ensemble import RandomForestClassifier  # Import RandomForestClassifier
 
-
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
-
-import pandas as pd
-import os
-import sys
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report, confusion_matrix
 from imblearn.over_sampling import SMOTE  # Import SMOTE
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 
-
 from split import particion #importo la función de carga que está en el archivo data_load.py
 from split import split_train_test #importo la función de carga que está en el archivo data_load.py
 
 
-#from catboost import CatBoostClassifier
 
 def model_trainning(file_path):
     
@@ -52,11 +41,22 @@ def model_trainning(file_path):
         smote = SMOTE(random_state=42)
         X_train_resampled, y_train_resampled = smote.fit_resample(X_train, y_train)
         
-        # Crear el modelo de CatBoostClassifier con ajuste de scale_pos_weight
-        regL= LogisticRegression(C=1.0,penalty='l2',random_state=1,solver="newton-cg",class_weight="balanced")
-        regL.fit(X_train_resampled, y_train_resampled)
+        # Crear el modelo de Random Forest con hiperparámetros ajustados
+        rf_model = RandomForestClassifier(
+            n_estimators=100,  # Número de árboles en el bosque
+            max_depth=10,      # Profundidad máxima de los árboles (puedes ajustar según tus necesidades)
+            random_state=42,   # Para reproducibilidad
+            class_weight="balanced"  # Para manejar el desbalance de clases
+        )        
         
-        y_pred=regL.predict(X_test)
+        
+        # Entrenar el modelo
+        rf_model.fit(X_train_resampled, y_train_resampled)
+        
+        # Hacer predicciones sobre el conjunto de prueba
+        y_pred=rf_model.predict(X_test)
+        
+        
         # Calcular métricas con el umbral ajustado
         accuracy = accuracy_score(y_test, y_pred)
         precision = precision_score(y_test, y_pred)
