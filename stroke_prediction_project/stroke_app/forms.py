@@ -1,6 +1,5 @@
 from django import forms
 
-# Widget personalizado para controlar el 'range'
 class RangeInput(forms.widgets.Input):
     input_type = 'range'
 
@@ -19,8 +18,8 @@ class StrokePredictionForm(forms.Form):
     )
     bmi = forms.FloatField(
         min_value=10, 
-        max_value=50, 
-        widget=RangeInput(attrs={'class': 'form-range', 'value': 30, 'oninput': 'this.nextElementSibling.value = this.value', 'min': 10, 'max': 50}),
+        max_value=40, 
+        widget=RangeInput(attrs={'class': 'form-range', 'value': 25, 'oninput': 'this.nextElementSibling.value = this.value', 'min': 10, 'max': 60}),
         label="BMI"
     )
     hypertension = forms.ChoiceField(
@@ -34,7 +33,7 @@ class StrokePredictionForm(forms.Form):
         label="Heart Disease"
     )
     gender = forms.ChoiceField(
-        choices=[('Female', 'Female'), ('Male', 'Male'), ('Other', 'Other')], 
+        choices=[('Male', 'Male'), ('Female', 'Female')], 
         widget=forms.Select(attrs={'class': 'form-select'}),
         label="Gender"
     )
@@ -47,8 +46,8 @@ class StrokePredictionForm(forms.Form):
         choices=[
             ('Private', 'Private'), 
             ('Self-employed', 'Self-employed'), 
-            ('Govt_job', 'Government Job'), 
-            ('children', 'Children'), 
+            ('Govt_job', 'Government Job'),
+            ('children', 'Children'),
             ('Never_worked', 'Never Worked')
         ], 
         widget=forms.Select(attrs={'class': 'form-select'}),
@@ -61,9 +60,9 @@ class StrokePredictionForm(forms.Form):
     )
     smoking_status = forms.ChoiceField(
         choices=[
-            ('Formerly Smoked', 'Formerly Smoked'), 
-            ('Never Smoked', 'Never Smoked'), 
-            ('Smokes', 'Smokes'), 
+            ('formerly smoked', 'Formerly Smoked'), 
+            ('never smoked', 'Never Smoked'), 
+            ('smokes', 'Smokes'), 
             ('Unknown', 'Unknown')
         ], 
         widget=forms.Select(attrs={'class': 'form-select'}),

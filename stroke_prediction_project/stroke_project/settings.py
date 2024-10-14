@@ -132,4 +132,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-MODEL_PATH = os.path.join(BASE_DIR, 'notebooks', 'finalmodel.pickle')
+MODEL_PATH = os.path.join(BASE_DIR, 'notebooks', 'best_stroke_prediction_model_logistic_regression.pkl')
