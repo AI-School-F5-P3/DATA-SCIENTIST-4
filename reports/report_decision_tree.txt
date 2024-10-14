@@ -1,0 +1,43 @@
+Informe Detallado del Modelo Decision Tree para la Predicción de Ictus
+==================================================
+
+1. Resumen del Conjunto de Datos
+Total de muestras: 4981
+Características: 10
+Distribución de clases: {0: 4733, 1: 248}
+
+2. Mejor Umbral Encontrado: 0.01
+
+3. Hiperparámetros del Mejor Modelo
+- class_weight: {0: 0.5261990281005705, 1: 10.04233870967742}
+- max_depth: 30
+- min_samples_leaf: 1
+- min_samples_split: 2
+
+4. Métricas del Modelo
+- Accuracy: 0.9229
+- Precision: 0.9221
+- Recall: 0.9241
+- F1: 0.9231
+- Auc_roc: 0.9255
+
+5. Validación Cruzada
+Scores de validación cruzada: [0.90363036 0.91551155 0.8996037  0.90488771 0.91809775]
+Precisión promedio: 0.9083
+
+6. Detección de Overfitting
+Precisión en entrenamiento: 0.9968
+Precisión en prueba: 0.9229
+Diferencia (Overfitting): 0.0739
+
+7. Importancia de las Características
+- age: 0.4284
+- avg_glucose_level: 0.1906
+- bmi: 0.1466
+- smoking_status: 0.1015
+- work_type: 0.0380
+- gender: 0.0352
+- heart_disease: 0.0172
+- ever_married: 0.0168
+- Residence_type: 0.0162
+- hypertension: 0.0096

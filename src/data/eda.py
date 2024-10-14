@@ -156,8 +156,9 @@ Q3 = df_raw['avg_glucose_level'].quantile(0.75)
 IQR = Q3 - Q1
 
 # Definir los límites para identificar outliers
-lower_bound = Q1 - 1.5 * IQR
-upper_bound = Q3 + 1.5 * IQR
+#Cambiamos 1.5 a 3 para detectar solo los outliers extremos.
+lower_bound = Q1 - 3 * IQR 
+upper_bound = Q3 + 3 * IQR
 
 # Filtrar los outliers
 outliers = df_raw[(df_raw['avg_glucose_level'] < lower_bound) |

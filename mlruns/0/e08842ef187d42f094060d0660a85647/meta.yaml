@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/avkav/Documents/BootcampAI/ProyectoDataScientist-Grupo4/DATA-SCIENTIST-4/mlruns/0/e08842ef187d42f094060d0660a85647/artifacts
+end_time: 1728637487372
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: e08842ef187d42f094060d0660a85647
+run_name: bedecked-quail-144
+run_uuid: e08842ef187d42f094060d0660a85647
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728637483232
+status: 3
+tags: []
+user_id: avkav

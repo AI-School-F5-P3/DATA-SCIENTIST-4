@@ -59,7 +59,7 @@ Para el día de la reunión, será necesario entregar:
 │   ├── /raw/               # Datos en bruto (sin procesar)
 │   └── /processed/         # Datos procesados
 │
-├── /models/                # Modelos entrenados
+├── /models_pkls/           # Modelos entrenados
 │   └── /xgboost/           # Modelo XGBoost
 │
 ├── /notebooks/             # Jupyter Notebooks para análisis exploratorio y prototipos
@@ -69,7 +69,7 @@ Para el día de la reunión, será necesario entregar:
 ├── /src/                   # Código fuente del proyecto
 │   ├── /data/              # Código relacionado con la gestión de datos
 │   ├── /features/          # Código para la creación de nuevas características
-│   ├── /models/            # Código para la definición y entrenamiento del modelo
+│   ├── /models_definition/ # Código para la definición y entrenamiento del modelo
 │   ├── /visualization/      # Código para visualizaciones
 │   └── __init__.py         # Hace que la carpeta src sea un paquete Python
 │

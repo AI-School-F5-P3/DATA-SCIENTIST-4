@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/avkav/Documents/BootcampAI/ProyectoDataScientist-Grupo4/DATA-SCIENTIST-4/mlruns/0/12bf4f8967bb46c78531f7f32df99d34/artifacts
+end_time: 1728645687679
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 12bf4f8967bb46c78531f7f32df99d34
+run_name: suave-goat-394
+run_uuid: 12bf4f8967bb46c78531f7f32df99d34
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728645683925
+status: 3
+tags: []
+user_id: avkav
