@@ -8,8 +8,13 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-requirements.txt/
+
+# Ignorar archivos y directorios
+venv/
+__pycache__/
 *.txt
+requirements.txt
+
 # Spyder project settings
 .spyderproject
 .spyproject
