@@ -13,27 +13,76 @@
         body {
             font-family: 'Raleway', sans-serif;
         }
+
+        /* Navbar Styling */
+        .navbar {
+            background-color: #2663a4;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            color: #fff;
+            font-size: 1.5rem;
+        }
+
+        .navbar-brand img {
+            width: 40px;
+            margin-right: 10px;
+        }
+
+        .nav-link {
+            color: #fff;
+            margin-right: 15px;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #ffc107;
+        }
+
+        .navbar-toggler {
+            border: none;
+        }
+
+        .navbar-toggler-icon {
+            filter: invert(1);
+        }
+
+        /* Content margin */
+        .container {
+            
+        }
     </style>
 </head>
 <body>
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg">
         <div class="container">
-            <a class="navbar-brand" href="#">Stroke Prediction</a>
+            <!-- Logo and Brand Name -->
+            <a class="navbar-brand" href="{% url 'predict_stroke' %}">
+                <img src="{% static 'media/stroke_logo2.png' %}" alt="Stroke Logo">
+                Stroke Prediction
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Predicción de Imágenes</a>
+                        <a class="nav-link me-5 fw-bold" href="#">Predicción de Imágenes</a>
+                    </li>
+                    <li class="nav-item fw-bold">
+                        <a href="{% url 'upload' %}" class="nav-link me-5">Carga Masiva</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Quienes somos</a>
+                        <a class="nav-link me-5 fw-bold" href="#">Quienes somos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Contacto</a>
+                        <a class="nav-link fw-bold" href="#">Contacto</a>
                     </li>
                 </ul>
             </div>
@@ -41,7 +90,7 @@
     </nav>
 
     <!-- Main Content -->
-    <div class="container mt-4">
+    <div class="container mt-3">
         {% block content %}
         {% endblock %}
     </div>
@@ -63,6 +112,31 @@
             document.getElementById('id_bmi').value = value;
             document.getElementById('bmi_output').innerText = value;
         }
+    </script>
+    <script>
+        // Actualiza el valor de la edad cuando se mueve el slider
+        const ageSlider = document.querySelector('input[name="age"]');
+        const ageOutput = document.getElementById('age_output');
+        ageOutput.innerText = ageSlider.value; // Inicializa el valor
+        ageSlider.addEventListener('input', function() {
+            ageOutput.innerText = this.value;
+        });
+    
+        // Actualiza el valor del nivel de glucosa
+        const glucoseSlider = document.querySelector('input[name="avg_glucose_level"]');
+        const glucoseOutput = document.getElementById('glucose_output');
+        glucoseOutput.innerText = glucoseSlider.value; // Inicializa el valor
+        glucoseSlider.addEventListener('input', function() {
+            glucoseOutput.innerText = this.value;
+        });
+    
+        // Actualiza el valor del BMI
+        const bmiSlider = document.querySelector('input[name="bmi"]');
+        const bmiOutput = document.getElementById('bmi_output');
+        bmiOutput.innerText = bmiSlider.value; // Inicializa el valor
+        bmiSlider.addEventListener('input', function() {
+            bmiOutput.innerText = this.value;
+        });
     </script>    
 </body>
 </html>

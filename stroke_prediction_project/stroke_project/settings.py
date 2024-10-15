@@ -144,3 +144,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MODEL_PATH = os.path.join(BASE_DIR, 'notebooks', 'best_stroke_prediction_model_logistic_regression.pkl')
+
+SCALER_PATH = os.path.join(BASE_DIR, 'notebooks', 'scaler.pkl')  # Ajusta la ruta según donde esté tu scaler
+ENCODER_PATH = os.path.join(BASE_DIR, 'notebooks', 'encoder.pkl')  # Ajusta la ruta según donde esté tu encoder
+

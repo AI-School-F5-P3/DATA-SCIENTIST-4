@@ -2,20 +2,54 @@
     background-color: #f8f9fa;
 } */
 
-/* .container {
-    background-color: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-} */
-
-h1 {
-    color: #007bff;
+ body {
+    font-family: 'Raleway', sans-serif;
 }
 
-.contador {
-    border: 2px dotted #5f5f5fd4;
-    border-radius: 10px;
-    padding: 2px 10px 2px 10px;
-    background-color: #e8f0de;
+/* Navbar Styling */
+
+ul.navbar-nav {
+    font-weight: bold;
+ }
+
+.navbar {
+    background-color: #2663a4;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    color: #fff;
+    font-size: 1.5rem;
+}
+
+.navbar-brand img {
+    width: 40px;
+    margin-right: 10px;
+}
+
+.nav-link {
+    color: #fff;
+    margin-right: 15px;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #ffc107;
+}
+
+.navbar-toggler {
+    border: none;
+}
+
+.navbar-toggler-icon {
+    filter: invert(1);
+}
+
+/* Content margin */
+.container {
+    
+}
+
