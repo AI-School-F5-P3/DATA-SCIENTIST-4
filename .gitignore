@@ -16,8 +16,8 @@ __pycache__/
 requirements.txt
 
 
-data/processed/csv/*.csv  
-
+data/processed/*.csv  
+data/processed/X_test.csv/
 # Spyder project settings
 .spyderproject
 .spyproject
@@ -197,3 +197,4 @@ MANIFEST
 # Ignorar modelos entrenados (dependiendo si no quieres incluir el modelo en el repo)
 models/*.pkl
 models/*.h5
+data/processed/df.csv
