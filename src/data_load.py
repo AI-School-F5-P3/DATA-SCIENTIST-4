@@ -2,15 +2,6 @@ import pandas as pd
 import os
 
 def load_data(file_path):
-    """
-    Carga los datos del archivo CSV.
-
-    Args:
-        file_path (str): Ruta al archivo CSV.
-
-    Returns:
-        pd.DataFrame: DataFrame con los datos cargados o None si hay un error.
-    """
 
     # Obtener la ruta absoluta del archivo para evitar problemas con rutas relativas
     abs_file_path = os.path.abspath(file_path)
@@ -56,5 +47,5 @@ if __name__ == "__main__":
         # Imprimir un mensaje de error si la carga falló
         print("No se pudieron cargar los datos. Verifica la ruta del archivo y su existencia.")
         
-        
+         
         

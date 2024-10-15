@@ -3,6 +3,7 @@ import os
 import sys
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier  # Import RandomForestClassifier
+import pickle
 
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report, confusion_matrix
 from imblearn.over_sampling import SMOTE  # Import SMOTE
@@ -77,9 +78,16 @@ def model_trainning(file_path):
         print(matrix)
         
         print('Terminado el train')
+        
+        # Guardar el modelo y el scaler
+        with open(ruta+'/models/random_forest_model.pkl', 'wb') as file:
+            pickle.dump(rf_model, file)
+                
         return matrix
     else:
         print("No se pudieron cargar los datos. Verifica la ruta del archivo y su existencia.")
+
+
 
 
 # Ejemplo de uso

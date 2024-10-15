@@ -11,12 +11,19 @@ from data_load import load_data #importo la función de carga que está en el ar
 #Voy a eliminar la columna 'ever_married' porque tiene una alta correlación con 'age'
 
 
-
+def remove_id(df):
+    """
+    Elimina variables redundantes del DataFrame.
+    """
+    df = df.iloc[:, 1:]
+    print(df.head())
+    return df
 
 def remove_redundant_variables(df):
     """
     Elimina variables redundantes del DataFrame.
     """
+    
     df = df.drop('ever_married', axis=1)
     print("Edad categorizada.")
     print("Variables redundantes eliminadas.")
@@ -27,8 +34,8 @@ def categorize_age(df):
     Categoriza la variable 'age' y elimina la columna original.
     """
     df['age_cat'] = pd.cut(df['age'], 
-                           bins=[18, 25, 35, 45, 55, 65, 100], 
-                           labels=['18-24', '25-34', '35-44', '45-54', '55-64', '65+'])
+                           bins=[0, 18, 25, 35, 45, 55, 65, 100], 
+                           labels=['1-17','18-24', '25-34', '35-44', '45-54', '55-64', '65+'])
     df = df.drop('age', axis=1)
     print("Edad categorizada.")
     return df
@@ -45,7 +52,7 @@ def categorize_bmi(df):
         (df['bmi'] >= 25.0) & (df['bmi'] < 29.9),  # Sobrepeso
         (df['bmi'] >= 30.0)  # Obeso
     ]
-    categories = ['Bajo peso', 'Normal', 'Sobrepeso', 'Obeso']
+    categories = ['Bajo', 'Normal', 'Sobrepeso', 'Obeso']
     
     # Crear una nueva columna 'bmi_category'
     df['bmi_cat'] = np.select(conditions, categories)
@@ -78,6 +85,7 @@ def encode_categorical_variables(df):
     """
     Codifica las variables categóricas usando one-hot encoding.
     """
+    
     categoricas = df.select_dtypes(include=['object']).columns.tolist()
     categoricas.append('age_cat')
     categoricas.append('bmi_cat')
@@ -99,7 +107,9 @@ def procesado(file_path):
         print("Dataset original:")
         print(df.head())
         
+        
         df = remove_redundant_variables(df)
+        df = remove_id(df)
         df = categorize_age(df)
         df = categorize_bmi(df)
         df = categorize_glucose(df)
@@ -108,7 +118,7 @@ def procesado(file_path):
         print("\nDataset procesado:")
         print(df.head())
         
-        df.to_csv(ruta + 'data/processed/df.csv')
+        df.to_csv(ruta + 'data/processed/df.csv',index=False)
         print(df.columns)
         return df
     else:
