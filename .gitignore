@@ -8,7 +8,8 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-
+requirements.txt/
+*.txt
 # Spyder project settings
 .spyderproject
 .spyproject
@@ -183,3 +184,8 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+
+
+# Ignorar modelos entrenados (dependiendo si no quieres incluir el modelo en el repo)
+models/*.pkl
+models/*.h5
