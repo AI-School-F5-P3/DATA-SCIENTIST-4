@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/avkav/Documents/BootcampAI/ProyectoDataScientist-Grupo4/DATA-SCIENTIST-4/mlruns/0/63c525e7595f417081767a55797d5ed1/artifacts
+end_time: 1728997996469
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 63c525e7595f417081767a55797d5ed1
+run_name: trusting-horse-31
+run_uuid: 63c525e7595f417081767a55797d5ed1
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728997993071
+status: 3
+tags: []
+user_id: avkav

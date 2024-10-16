@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/avkav/Documents/BootcampAI/ProyectoDataScientist-Grupo4/DATA-SCIENTIST-4/mlruns/0/c336c76f400f4c26a2861a247d253bd9/artifacts
+end_time: 1729058197004
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: c336c76f400f4c26a2861a247d253bd9
+run_name: fortunate-quail-313
+run_uuid: c336c76f400f4c26a2861a247d253bd9
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1729058192812
+status: 3
+tags: []
+user_id: avkav

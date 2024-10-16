@@ -1,4 +1,3 @@
-# streamlit_app.py
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -6,8 +5,9 @@ from sklearn.preprocessing import StandardScaler
 import joblib
 import os
 import matplotlib.pyplot as plt
+import xgboost as xgb
 
-# Función para obtener la ruta absoluta del directorio del proyecto
+# Function to get the absolute path of the project directory
 def get_project_root():
     current_path = os.path.abspath(__file__)
     while True:
@@ -15,70 +15,69 @@ def get_project_root():
         if 'models' in os.listdir(current_path):
             return current_path
         if tail == '':
-            raise FileNotFoundError("No se pudo encontrar el directorio del proyecto con la carpeta 'models'")
+            raise FileNotFoundError("Could not find the project directory with the 'models' folder")
 
-# Ajustar la ruta para acceder a los archivos .pkl
+# Adjust the path to access .pkl files
 @st.cache_resource
-def load_model_and_scaler():
+def load_model():
     try:
         project_root = get_project_root()
-        model_path = os.path.join(project_root, 'models', 'decision_tree', 'model_decision_tree.pkl')
+        model_path = os.path.join(project_root, 'models', 'xgboost', 'model_xgboost.pkl')
         
-        with open(model_path, 'rb') as file:
-            model, best_threshold = joblib.load(file)
-        return model, best_threshold
+        model = joblib.load(model_path)
+        return model
     except Exception as e:
-        st.error(f"Error al cargar el modelo y el scaler: {str(e)}")
+        st.error(f"Error loading the model: {str(e)}")
         raise
 
-# Cargar el modelo y el scaler
+# Load the model
 try:
-    model, best_threshold = load_model_and_scaler()
-    st.success("Modelo y scaler cargados correctamente.")
+    model = load_model()
+    st.success("Model loaded successfully.")
 except Exception as e:
-    st.error(f"No se pudo cargar el modelo o el scaler: {str(e)}")
+    st.error(f"Could not load the model: {str(e)}")
     st.stop()
 
-st.title('Predictor de Riesgo de Ictus')
+st.title('Stroke Risk Predictor')
 
-st.write('Por favor, ingrese los siguientes datos del paciente:')
+st.write('Please enter the following patient data:')
 
-# Mapeos para variables categóricas
+# Mappings for categorical variables
 gender_map = {'Male': 0, 'Female': 1}
 ever_married_map = {'No': 0, 'Yes': 1}
 work_type_map = {'Private': 0, 'Self-employed': 1, 'Govt_job': 2, 'children': 3, 'Never_worked': 4}
 residence_type_map = {'Urban': 0, 'Rural': 1}
 smoking_status_map = {'never smoked': 0, 'formerly smoked': 1, 'smokes': 2, 'Unknown': 3}
 
-# Crear inputs para cada característica
-gender = st.selectbox('Género', list(gender_map.keys()))
-age = st.number_input('Edad', min_value=0, max_value=120, value=30)
-hypertension = st.selectbox('Hipertensión', [0, 1])
-heart_disease = st.selectbox('Enfermedad cardíaca', [0, 1])
-ever_married = st.selectbox('Alguna vez casado', list(ever_married_map.keys()))
-work_type = st.selectbox('Tipo de trabajo', list(work_type_map.keys()))
-residence_type = st.selectbox('Tipo de residencia', list(residence_type_map.keys()))
-avg_glucose_level = st.number_input('Nivel promedio de glucosa', min_value=0.0, max_value=300.0, value=100.0)
-bmi = st.number_input('IMC', min_value=10.0, max_value=50.0, value=25.0)
-smoking_status = st.selectbox('Estado de fumador', list(smoking_status_map.keys()))
+# Create inputs for each feature
+gender = st.selectbox('Gender', list(gender_map.keys()))
+age = st.number_input('Age', min_value=0, max_value=120, value=30)
+hypertension = st.selectbox('Hypertension', [0, 1])
+heart_disease = st.selectbox('Heart disease', [0, 1])
+ever_married = st.selectbox('Ever married', list(ever_married_map.keys()))
+work_type = st.selectbox('Work type', list(work_type_map.keys()))
+residence_type = st.selectbox('Residence type', list(residence_type_map.keys()))
+avg_glucose_level = st.number_input('Average glucose level', min_value=0.0, max_value=300.0, value=100.0)
+bmi = st.number_input('BMI', min_value=10.0, max_value=50.0, value=25.0)
+smoking_status = st.selectbox('Smoking status', list(smoking_status_map.keys()))
 
 def validate_input(input_data):
     if input_data['age'].values[0] < 0 or input_data['age'].values[0] > 120:
-        raise ValueError("La edad debe estar entre 0 y 120 años.")
+        raise ValueError("Age must be between 0 and 120 years.")
     if input_data['avg_glucose_level'].values[0] < 0:
-        raise ValueError("El nivel de glucosa no puede ser negativo.")
+        raise ValueError("Glucose level cannot be negative.")
     if input_data['bmi'].values[0] < 10 or input_data['bmi'].values[0] > 50:
-        raise ValueError("El IMC debe estar entre 10 y 50.")
+        raise ValueError("BMI must be between 10 and 50.")
 
-# Almacenar el umbral en el estado de la sesión
+# Store the threshold in the session state
 if 'user_threshold' not in st.session_state:
-    st.session_state.user_threshold = best_threshold
+    st.session_state.user_threshold = 0.5  # Default threshold
 
-# Slider para ajustar el umbral dinámico
-st.session_state.user_threshold = st.slider('Ajustar umbral para la predicción', 0.0, 1.0, st.session_state.user_threshold)
+# Slider to adjust the dynamic threshold
+st.session_state.user_threshold = st.slider('Adjust threshold for prediction', 0.0, 1.0, st.session_state.user_threshold)
 
-if st.button('Predecir'):
-    # Crear un DataFrame con los datos ingresados y mapeados
+if st.button('Predict'):
+    # Create a DataFrame with the input data and mapped values
     input_data = pd.DataFrame({
         'gender': [gender_map[gender]],
         'age': [age],
@@ -94,43 +93,43 @@ if st.button('Predecir'):
 
     try:
         validate_input(input_data)
-               
-        st.write("Datos de entrada (escalados):")
-        st.write(pd.DataFrame( columns=input_data.columns))
         
-        # Hacer la predicción
+        st.write("Input data:")
+        st.write(input_data)
+        
+        # Make the prediction
         probability = model.predict_proba(input_data)[0][1]
         
-        # Usar el umbral almacenado en session_state
+        # Use the threshold stored in session_state
         prediction = 1 if probability >= st.session_state.user_threshold else 0
 
-        # Mostrar resultados
-        st.subheader('Resultados de la Predicción:')
+        # Display results
+        st.subheader('Prediction Results:')
         if prediction == 1:
-            st.warning('El paciente tiene un **alto riesgo** de sufrir un ictus.')
+            st.warning('The patient has a **high risk** of stroke.')
         else:
-            st.success('El paciente tiene un **bajo riesgo** de sufrir un ictus.')
+            st.success('The patient has a **low risk** of stroke.')
 
-        st.write(f'**Probabilidad estimada de sufrir un ictus:** {probability:.2%}')
-        st.write(f'**Umbral de decisión seleccionado:** {st.session_state.user_threshold:.2%}')
+        st.write(f'**Estimated probability of stroke:** {probability:.2%}')
+        st.write(f'**Selected decision threshold:** {st.session_state.user_threshold:.2%}')
 
-        # Visualización de riesgo basado en probabilidad
-        st.write('Interpretación de la probabilidad:')
+        # Risk visualization based on probability
+        st.write('Probability interpretation:')
         if probability < 0.3:
-            st.write('**Riesgo Bajo**')
+            st.write('**Low Risk**')
         elif 0.3 <= probability <= 0.7:
-            st.write('**Riesgo Moderado**')
+            st.write('**Moderate Risk**')
         else:
-            st.write('**Riesgo Alto**')
+            st.write('**High Risk**')
 
-        # Visualización de la probabilidad
+        # Probability visualization
         fig, ax = plt.subplots()
-        ax.bar(['No Ictus', 'Ictus'], [1-probability, probability])
-        ax.set_ylabel('Probabilidad')
-        ax.set_title('Probabilidad de Ictus')
+        ax.bar(['No Stroke', 'Stroke'], [1-probability, probability])
+        ax.set_ylabel('Probability')
+        ax.set_title('Stroke Probability')
         st.pyplot(fig)
 
     except Exception as e:
-        st.error(f"Error en la predicción: {str(e)}")
+        st.error(f"Error in prediction: {str(e)}")
 
-st.info('Nota: Esta herramienta es solo para fines informativos y no sustituye el diagnóstico médico profesional.')
+st.info('Note: This tool is for informational purposes only and does not replace professional medical diagnosis.')
