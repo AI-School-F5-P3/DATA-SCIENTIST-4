@@ -2,16 +2,15 @@
 {% load static %}
 
 {% block content %}
-<div class="row mb-3">
+<div class="row mt-5 text-center">
     <div class="col-md-12">
-        <h1 class="text-center text-black-50 fw-bolder bg-light p-3 rounded" style="text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);">Stroke Prediction App</h1>
-    </div>    
+        <form method="post" action="/upload/" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="file" accept=".csv" required">
+            <button type="submit" class="btn text-light fw-bold" style="background-color:#3e78b6;">Upload CSV</button>
+        </form>
+    </div>
 </div>
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <input type="file" name="file" accept=".csv" required>
-    <button type="submit" class="btn btn-primary">Upload CSV</button>
-</form>
 {% if error %}
     <div class="alert alert-danger">{{ error }}</div>
 {% endif %}

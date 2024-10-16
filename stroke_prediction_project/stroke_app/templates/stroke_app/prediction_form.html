@@ -2,11 +2,22 @@
 {% load static %}
 
 {% block content %}
-<div class="row mb-2">
+{% comment %} If we want a small hero area uncomment the following code: {% endcomment %}
+{% comment %} <div class="row mb-2">
     <div class="col-md-12">
-        <h1 class="text-center text-black-50 fw-bolder bg-light p-3 rounded" style="text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);">Stroke Prediction App</h1>
+        <h1 class="text-center fw-bolder bg-light p-3 rounded titulo">Stroke Prediction App</h1>
     </div>    
-</div>
+</div> {% endcomment %}
+
+{% comment %} If we want a video cover contained uncomment the following code: {% endcomment %}
+{% comment %} <div class="video-cover vid-container mb-2" style="margin-top: -7px;">
+    <video autoplay loop muted>
+        <source src="{% static 'media/brain4_pexels.mp4' %}" type="video/mp4" />
+    </video>
+    <div class="video-overlay">
+        <h1 class="text-center text-light fw-bolder rounded">Stroke Prediction App</h1>
+    </div>
+</div> {% endcomment %}
 
 <form method="post" class="row g-3">
     {% csrf_token %}
@@ -71,8 +82,8 @@
             </div>
 
             <div class="mb-4">
-                <label for="{{ form.residence_type.id_for_label }}" class="form-label fw-bold">Residence Type</label>
-                {{ form.residence_type }}
+                <label for="{{ form.Residence_type.id_for_label }}" class="form-label fw-bold">Residence Type</label>
+                {{ form.Residence_type }}
             </div>
 
             <div class="mb-3">
@@ -122,8 +133,50 @@
             modal.show();
         }
     });
+    document.addEventListener('DOMContentLoaded', function() {
+        // Obtener los sliders y los elementos de output para Age, Glucose y BMI
+
+        const ageSlider = document.getElementById('{{ form.age.id_for_label }}');  // id del slider para la edad
+        const ageOutput = document.getElementById('age_output');
+        console.log('ageSlider:', ageSlider);  // Verificar si se encuentra el slider de edad
+        console.log('ageOutput:', ageOutput);  // Verificar si se encuentra el output de edad
+
+        if (ageSlider && ageOutput) {
+            ageOutput.innerText = ageSlider.value;  // Inicializa el valor del output basado en el valor actual del slider
+            ageSlider.addEventListener('input', function() {
+                ageOutput.innerText = this.value;  // Actualiza el valor del output cuando el slider se mueve
+            });
+        } else {
+            console.error('Elemento ageSlider o ageOutput no encontrado.');
+        }
+
+        const glucoseSlider = document.getElementById('{{ form.avg_glucose_level.id_for_label }}');  // id del slider para la glucosa
+        const glucoseOutput = document.getElementById('glucose_output');
+        console.log('glucoseSlider:', glucoseSlider);  // Verificar si se encuentra el slider de glucosa
+        console.log('glucoseOutput:', glucoseOutput);  // Verificar si se encuentra el output de glucosa
+
+        if (glucoseSlider && glucoseOutput) {
+            glucoseOutput.innerText = glucoseSlider.value;  // Inicializa el valor del output basado en el valor actual del slider
+            glucoseSlider.addEventListener('input', function() {
+                glucoseOutput.innerText = this.value;  // Actualiza el valor del output cuando el slider se mueve
+            });
+        } else {
+            console.error('Elemento glucoseSlider o glucoseOutput no encontrado.');
+        }
+
+        const bmiSlider = document.getElementById('{{ form.bmi.id_for_label }}');  // id del slider para el BMI
+        const bmiOutput = document.getElementById('bmi_output');
+        console.log('bmiSlider:', bmiSlider);  // Verificar si se encuentra el slider de BMI
+        console.log('bmiOutput:', bmiOutput);  // Verificar si se encuentra el output de BMI
+
+        if (bmiSlider && bmiOutput) {
+            bmiOutput.innerText = bmiSlider.value;  // Inicializa el valor del output basado en el valor actual del slider
+            bmiSlider.addEventListener('input', function() {
+                bmiOutput.innerText = this.value;  // Actualiza el valor del output cuando el slider se mueve
+            });
+        } else {
+            console.error('Elemento bmiSlider o bmiOutput no encontrado.');
+        }
+    });
 </script>
-    
-
-
 {% endblock %}

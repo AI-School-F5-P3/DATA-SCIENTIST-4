@@ -17,8 +17,6 @@ def predict_stroke(request):
     if request.method == 'POST':
         form = StrokePredictionForm(request.POST)
         if form.is_valid():
-            # Mostrar datos del formulario para depuración
-            print("Formulario válido:", form.cleaned_data)
             
             # Convertir los datos para la predicción
             input_data = pd.DataFrame({
@@ -30,7 +28,7 @@ def predict_stroke(request):
                 'gender': [form.cleaned_data['gender']],
                 'ever_married': [form.cleaned_data['ever_married']],
                 'work_type': [form.cleaned_data['work_type']],
-                'Residence_type': [form.cleaned_data['residence_type']],
+                'Residence_type': [form.cleaned_data['Residence_type']],
                 'smoking_status': [form.cleaned_data['smoking_status']],
             })
 
@@ -53,7 +51,7 @@ def predict_stroke(request):
                 gender=form.cleaned_data['gender'],
                 ever_married=True if form.cleaned_data['ever_married'] == 'Yes' else False,
                 work_type=form.cleaned_data['work_type'],
-                residence_type=form.cleaned_data['residence_type'],
+                Residence_type=form.cleaned_data['Residence_type'],
                 smoking_status=form.cleaned_data['smoking_status'],
                 stroke_risk=stroke_risk,
                 date_submitted=timezone.now()
@@ -73,73 +71,55 @@ def predict_stroke(request):
 
     return render(request, 'stroke_app/prediction_form.html', {'form': form})
 
+# Cargar el modelo y otros archivos de preprocesamiento
 
-def upload_csv(request):
-    if request.method == 'POST' and request.FILES['file']:
-        file = request.FILES['file']
-        df = pd.read_csv(file)
+def load_scaler():
+    scaler_path = settings.SCALER_PATH
+    return joblib.load(scaler_path)
 
-        # Asumiendo que tienes un modelo StrokePrediction con los campos adecuados
-        for _, row in df.iterrows():
-            StrokePrediction.objects.create(
-                gender=row['gender'],
-                age=row['age'],
-                hypertension=row['hypertension'],
-                heart_disease=row['heart_disease'],
-                ever_married=row['ever_married'],
-                work_type=row['work_type'],
-                residence_type=row['Residence_type'],
-                avg_glucose_level=row['avg_glucose_level'],
-                bmi=row['bmi'],
-                smoking_status=row['smoking_status'],
-                stroke=row['stroke']  # Aquí se puede ajustar según lo que necesites
-            )
-        return redirect('success_page')  # Redirigir a una página de éxito o similar
+scaler = load_scaler()
 
-    return render(request, 'stroke_app/upload.html')
+def load_encoder():
+    encoder_path = settings.ENCODER_PATH
+    return joblib.load(encoder_path)
 
-def upload_view(request):
-    return render(request, 'stroke_app/upload.html')
+encoder = load_encoder()
 
 def preprocess_data(df):
-    # Cargar el scaler y encoder que se guardaron
-    scaler = joblib.load(settings.SCALER_PATH)
-    encoder = joblib.load(settings.ENCODER_PATH)
-
-    # Definir las características numéricas y categóricas
+    
+    # Escalar las características numéricas
     numeric_features = ['age', 'avg_glucose_level', 'bmi']
-    categorical_features = ['gender', 'ever_married', 'work_type', 'residence_type', 'smoking_status']
-
-    # Aplicar el escalado a las características numéricas
     df[numeric_features] = scaler.transform(df[numeric_features])
-
-    # Codificar las variables categóricas
+    
+    # Codificar las características categóricas
+    categorical_features = ['gender', 'ever_married', 'work_type', 'Residence_type', 'smoking_status']
     encoded_categorical = encoder.transform(df[categorical_features])
 
-    # Combinar el resultado
-    df_encoded = pd.concat([df.drop(categorical_features, axis=1), pd.DataFrame(encoded_categorical)], axis=1)
-
-    return df_encoded
+    # Combinar los datos codificados
+    df_encoded = pd.DataFrame(encoded_categorical, columns=encoder.get_feature_names_out(categorical_features))
+    df_preprocessed = pd.concat([df[numeric_features], df_encoded], axis=1)
+    
+    return df_preprocessed
 
 def upload_csv_and_predict(request):
     if request.method == 'POST' and request.FILES['file']:
         file = request.FILES['file']
-        df = pd.read_csv(file)
+        try:
+            df = pd.read_csv(file)
+        except Exception as e:
+            return render(request, 'stroke_app/upload.html', {'error': f'Error al cargar el archivo CSV: {e}'})
 
-        # Asegurarse de que las columnas del CSV coincidan con lo esperado
-        required_columns = ['gender', 'age', 'hypertension', 'heart_disease', 'ever_married', 'work_type', 'residence_type', 'avg_glucose_level', 'bmi', 'smoking_status']
+        required_columns = ['gender', 'age', 'hypertension', 'heart_disease', 'ever_married', 'work_type', 'Residence_type', 'avg_glucose_level', 'bmi', 'smoking_status']
         if all(col in df.columns for col in required_columns):
-            
-            # Preprocesar los datos antes de hacer la predicción
+            # Preprocesar los datos
             df_preprocessed = preprocess_data(df)
-            
-            # Hacer predicciones con el modelo preentrenado
+
+            # Hacer predicciones
             predictions = model.predict(df_preprocessed)
 
-            # Agregar las predicciones al DataFrame
-            df['prediction'] = predictions
-            
-            # Guardar los resultados en la base de datos
+            # Agregar predicciones al DataFrame
+            df['stroke_risk'] = predictions
+
             for _, row in df.iterrows():
                 StrokePrediction.objects.create(
                     gender=row['gender'],
@@ -148,18 +128,16 @@ def upload_csv_and_predict(request):
                     heart_disease=row['heart_disease'],
                     ever_married=row['ever_married'],
                     work_type=row['work_type'],
-                    residence_type=row['residence_type'],
+                    Residence_type=row['Residence_type'],
                     avg_glucose_level=row['avg_glucose_level'],
                     bmi=row['bmi'],
                     smoking_status=row['smoking_status'],
-                    stroke=row['prediction'],  # Guardar la predicción
+                    stroke_risk='High' if row['stroke_risk'] == 1 else 'Low',
                     date_submitted=timezone.now()
                 )
 
-            return redirect('success_page')  # Redirigir a una página de éxito o similar
+            return redirect('success_page')
         else:
-            # Manejar el error si faltan columnas
-            print("Faltan columnas en el CSV")
             return render(request, 'stroke_app/upload.html', {'error': 'Faltan columnas en el archivo CSV'})
 
     return render(request, 'stroke_app/upload.html')

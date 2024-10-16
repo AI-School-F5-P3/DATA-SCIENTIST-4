@@ -6,6 +6,10 @@
     font-family: 'Raleway', sans-serif;
 }
 
+h1.titulo {
+    color:#4b86c6 !important;
+}
+
 /* Navbar Styling */
 
 ul.navbar-nav {
@@ -14,7 +18,7 @@ ul.navbar-nav {
 
 .navbar {
     background-color: #2663a4;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgb(255, 255, 255);
 }
 
 .navbar-brand {
@@ -23,6 +27,11 @@ ul.navbar-nav {
     font-weight: bold;
     color: #fff;
     font-size: 1.5rem;
+}
+
+a.logo:hover 
+{
+    color: #ffc107 !important;
 }
 
 .navbar-brand img {
@@ -48,8 +57,43 @@ ul.navbar-nav {
     filter: invert(1);
 }
 
-/* Content margin */
-.container {
-    
+/* Estilos para el video */
+video {
+    width: 100%;
+    height: 100%;
 }
 
+.vid-container {
+    position: relative;
+    width: 100%;
+    height: 100px; /* Ajusta la altura según tu preferencia */
+    overflow: hidden;
+}
+
+.video-cover video {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+/* Nuevos estilos para el texto sobre el video */
+.video-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #ffffff; /* Blanco para el texto */
+    text-align: center;
+    /* padding: 20px; */
+    background: rgba(0, 0, 0, 0.5); 
+    /* Fondo negro semi-transparente */
+    border-radius: 5px; /* Bordes redondeados opcional */
+    width: 50%; /* estaba a 70% en musica armonia */
+    box-sizing: border-box; /* Para incluir el padding en el ancho total */
+}
+
+.text-muted {
+    color: #ffffff; /* Blanco para el texto */
+    font-size: 2rem; /* Tamaño del texto, ajusta según tu preferencia */
+    margin: 0; /* Elimina el margen si es necesario */
+}

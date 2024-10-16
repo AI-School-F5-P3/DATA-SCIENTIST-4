@@ -3,7 +3,6 @@ class StrokePrediction(models.Model):
     GENDER_CHOICES = [
         ('Male', 'Male'),
         ('Female', 'Female'),
-        ('Other', 'Other'),
     ]
 
     SMOKING_STATUS_CHOICES = [
@@ -33,9 +32,9 @@ class StrokePrediction(models.Model):
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
     ever_married = models.BooleanField()
     work_type = models.CharField(max_length=50, choices=WORK_TYPE_CHOICES)
-    residence_type = models.CharField(max_length=50, choices=RESIDENCE_TYPE_CHOICES)
+    Residence_type = models.CharField(max_length=50, choices=RESIDENCE_TYPE_CHOICES)
     smoking_status = models.CharField(max_length=20, choices=SMOKING_STATUS_CHOICES)
-    stroke_risk = models.CharField(max_length=10, blank=True, null=True) 
+    stroke_risk = models.CharField(max_length=255, blank=True, null=True) 
     date_submitted = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

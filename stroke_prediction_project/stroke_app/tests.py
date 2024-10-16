@@ -15,7 +15,7 @@ class StrokePredictionFormTest(TestCase):
             'gender': 'Male',
             'ever_married': True,  # Cambiado a booleano
             'work_type': 'Private',
-            'residence_type': 'Urban',
+            'Residence_type': 'Urban',
             'smoking_status': 'never smoked'
         }
         form = StrokePredictionForm(data=form_data)
@@ -50,7 +50,7 @@ class StrokePredictionViewTest(TestCase):
             'gender': 'Male',
             'ever_married': True,
             'work_type': 'Private',
-            'residence_type': 'Urban',
+            'Residence_type': 'Urban',
             'smoking_status': 'never smoked'
         }
         response = self.client.post(reverse('predict_stroke'), data=form_data)
@@ -78,7 +78,7 @@ class StrokePredictionModelTest(TestCase):
             gender='Male',
             ever_married=True,
             work_type='Private',
-            residence_type='Urban',
+            Residence_type='Urban',
             smoking_status='never smoked',
             stroke_risk='no'
         )
@@ -91,7 +91,7 @@ class StrokePredictionModelTest(TestCase):
         self.assertEqual(prediction.gender, 'Male')
         self.assertEqual(prediction.ever_married, True)
         self.assertEqual(prediction.work_type, 'Private')
-        self.assertEqual(prediction.residence_type, 'Urban')
+        self.assertEqual(prediction.Residence_type, 'Urban')
         self.assertEqual(prediction.smoking_status, 'never smoked')
         self.assertEqual(prediction.stroke_risk, 'no')
 
@@ -123,7 +123,7 @@ class StrokePredictionInvalidTest(TestCase):
             'gender': 'Male',
             'ever_married': True,
             'work_type': 'Private',
-            'residence_type': 'Urban',
+            'Residence_type': 'Urban',
             'smoking_status': 'never smoked'
         }
         response = self.client.post(reverse('predict_stroke'), data=form_data)
@@ -156,7 +156,7 @@ class StrokePredictionMockTest(TestCase):
             'gender': 'Male',
             'ever_married': True,
             'work_type': 'Private',
-            'residence_type': 'Urban',
+            'Residence_type': 'Urban',
             'smoking_status': 'never smoked'
         }
         response = self.client.post(reverse('predict_stroke'), data=form_data)
