@@ -91,7 +91,7 @@ DATABASES = {
         'USER': os.getenv('DB_USER'),  # Lee el usuario desde .env
         'PASSWORD': os.getenv('DB_PASSWORD'),  # Lee la contraseña desde .env
         'HOST': os.getenv('DB_HOST'),  # Lee el host desde .env
-        'PORT': os.getenv('DB_PORT'),  # Lee el puerto desde .env
+        'PORT': os.getenv('DB_PORT', '3306'),  # Lee el puerto desde .env
     }
 }
 
@@ -147,4 +147,6 @@ MODEL_PATH = os.path.join(BASE_DIR, 'notebooks', 'best_stroke_prediction_model_l
 
 SCALER_PATH = os.path.join(BASE_DIR, 'notebooks', 'scaler.pkl')  # Ajusta la ruta según donde esté tu scaler
 ENCODER_PATH = os.path.join(BASE_DIR, 'notebooks', 'encoder.pkl')  # Ajusta la ruta según donde esté tu encoder
+
+MLFLOW_TRACKING_URI = 'http://localhost:5000'  # Cambia a la URL de tu servidor MLflow si lo necesitas
 
