@@ -83,12 +83,40 @@ Para el día de la reunión, será necesario entregar:
 - Sistemas de entrenamiento y despliegue automático de nuevas versiones del modelo (**A/B testing**, **Data Drifting**, **MLOps**).
 - En el futuro, también se quieren utilizar imágenes, crear un prototipo de clasificador con **redes neuronales convolucionales** utilizando este otro dataset (Keras, PyTorch, etc.).
 
-## 📈 Contribuciones
-Las contribuciones son bienvenidas. Por favor, abre un **issue** o un **pull request** si deseas colaborar en este proyecto.
-
-## 📞 Contacto
-Si tienes preguntas o sugerencias, no dudes en contactar al equipo de desarrollo.
-
----
-
-**¡Gracias por tu interés en este proyecto! 🚀**
+## 📈 Estructura de Carpetas para el Proyecto
+```bash
+/proyecto-ictus/
+│
+├── /data/                  # Carpeta para los datos
+│   ├── /raw/               # Datos en bruto (sin procesar)
+│   └── /processed/         # Datos procesados
+│
+├── /models_pkls/           # Modelos entrenados
+│   └── /xgboost/           # Modelo XGBoost
+│
+├── /notebooks/             # Jupyter Notebooks para análisis exploratorio y prototipos
+│   ├── eda.ipynb           # Notebook para el análisis exploratorio de datos
+│   └── model_training.ipynb # Notebook para el entrenamiento del modelo
+│
+├── /src/                   # Código fuente del proyecto
+│   ├── /data/              # Código relacionado con la gestión de datos
+│   ├── /features/          # Código para la creación de nuevas características
+│   ├── /models_definition/ # Código para la definición y entrenamiento del modelo
+│   ├── /visualization/      # Código para visualizaciones
+│   └── __init__.py         # Hace que la carpeta src sea un paquete Python
+│
+├── /reports/               # Informes generados
+│   ├── /figures/           # Gráficos y visualizaciones
+│   └── final_report.pdf     # Informe final del proyecto
+│
+├── /requirements/          # Archivo de requisitos
+│   └── requirements.txt     # Librerías necesarias para el proyecto
+│
+├── /tests/                 # Pruebas unitarias y de integración
+│   ├── __init__.py         # Hace que la carpeta tests sea un paquete Python
+│   └── test_model.py       # Pruebas para el modelo
+│
+├── .gitignore               # Archivos y carpetas que Git debe ignorar
+├── README.md                # Archivo README del proyecto
+├── setup.py                 # Script de instalación (si es necesario)
+└── LICENSE                  # Licencia del proyecto

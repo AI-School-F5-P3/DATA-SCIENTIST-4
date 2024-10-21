@@ -1,0 +1,45 @@
+
+    Model Performance Report
+    ========================
+    
+    Model: VotingClassifier
+    
+    Best Parameters:
+    {'gb__learning_rate': 0.1, 'gb__n_estimators': 200, 'lr__C': 0.1, 'rf__max_depth': None, 'rf__n_estimators': 200, 'xgb__learning_rate': 0.2, 'xgb__max_depth': 10}
+    
+    Class Weights:
+    {0: 0.9503012048192772, 1: 0.04969879518072289}
+    
+    Metrics:
+    {'accuracy': 0.9458375125376128, 'precision': 0.16666666666666666, 'recall': 0.02, 'f1': 0.03571428571428571, 'auc_roc': 0.8177613516367477}
+    
+    Cross-validation ROC AUC:
+    Mean: 0.808 (+/- 0.046)
+    
+    Threshold Analysis:
+    Best F1 Score: 0.235 at threshold 0.16
+    
+    Feature Importance:
+                 feature  importance
+1                age    0.297864
+9          work_type    0.208777
+8     smoking_status    0.157056
+2  avg_glucose_level    0.075861
+3                bmi    0.069114
+4       ever_married    0.059890
+7       hypertension    0.036400
+5             gender    0.035156
+0     Residence_type    0.034968
+6      heart_disease    0.024915
+    
+    Classification Report:
+                  precision    recall  f1-score   support
+
+           0       0.95      0.99      0.97       947
+           1       0.17      0.02      0.04        50
+
+    accuracy                           0.95       997
+   macro avg       0.56      0.51      0.50       997
+weighted avg       0.91      0.95      0.93       997
+
+    

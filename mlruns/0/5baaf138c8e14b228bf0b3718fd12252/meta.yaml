@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/avkav/Documents/BootcampAI/ProyectoDataScientist-Grupo4/DATA-SCIENTIST-4/mlruns/0/5baaf138c8e14b228bf0b3718fd12252/artifacts
+end_time: 1729074245945
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 5baaf138c8e14b228bf0b3718fd12252
+run_name: mercurial-lark-701
+run_uuid: 5baaf138c8e14b228bf0b3718fd12252
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1729074241610
+status: 3
+tags: []
+user_id: avkav

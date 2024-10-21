@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/avkav/Documents/BootcampAI/ProyectoDataScientist-Grupo4/DATA-SCIENTIST-4/mlruns/0/31ca7f6e45b2411392514b33450f52d0/artifacts
+end_time: 1729507462696
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 31ca7f6e45b2411392514b33450f52d0
+run_name: intelligent-seal-24
+run_uuid: 31ca7f6e45b2411392514b33450f52d0
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1729507452842
+status: 3
+tags: []
+user_id: avkav

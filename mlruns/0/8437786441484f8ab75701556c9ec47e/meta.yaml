@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/avkav/Documents/BootcampAI/ProyectoDataScientist-Grupo4/DATA-SCIENTIST-4/mlruns/0/8437786441484f8ab75701556c9ec47e/artifacts
+end_time: 1729503545230
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 8437786441484f8ab75701556c9ec47e
+run_name: flawless-grub-325
+run_uuid: 8437786441484f8ab75701556c9ec47e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1729503537715
+status: 3
+tags: []
+user_id: avkav

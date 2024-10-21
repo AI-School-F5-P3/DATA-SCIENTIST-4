@@ -1,0 +1,16 @@
+artifact_uri: file:///C:/Users/avkav/Documents/BootcampAI/ProyectoDataScientist-Grupo4/DATA-SCIENTIST-4/mlruns/0/be9ccb9d7eaf44958f8b21a8d7be923a/artifacts
+deleted_time: 1729076672392
+end_time: 1728656091017
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: be9ccb9d7eaf44958f8b21a8d7be923a
+run_name: fun-horse-687
+run_uuid: be9ccb9d7eaf44958f8b21a8d7be923a
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1728656087093
+status: 3
+tags: []
+user_id: avkav

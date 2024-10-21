@@ -1,0 +1,58 @@
+Informe Detallado del Modelo Balanced Random Forest para la Predicción de Ictus
+==================================================
+
+1. Resumen del Conjunto de Datos
+Total de muestras: 4981
+Características: 10
+Distribución de clases: {0: 4733, 1: 248}
+
+2. Parámetros del Modelo
+- bootstrap: False
+- ccp_alpha: 0.0
+- class_weight: None
+- criterion: gini
+- max_depth: None
+- max_features: sqrt
+- max_leaf_nodes: None
+- max_samples: None
+- min_impurity_decrease: 0.0
+- min_samples_leaf: 1
+- min_samples_split: 2
+- min_weight_fraction_leaf: 0.0
+- monotonic_cst: None
+- n_estimators: 100
+- n_jobs: None
+- oob_score: False
+- random_state: 42
+- replacement: warn
+- sampling_strategy: warn
+- verbose: 0
+- warm_start: False
+
+3. Métricas del Modelo
+- Accuracy: 0.7151
+- Precision: 0.1429
+- Recall: 0.8519
+- F1: 0.2447
+- Auc_roc: 0.8231
+
+4. Validación Cruzada
+Scores de validación cruzada: [0.7221665  0.72389558 0.70281124 0.74497992 0.70883534]
+Precisión promedio: 0.7205
+
+5. Detección de Overfitting
+Precisión en entrenamiento: 0.7395
+Precisión en prueba: 0.7151
+Diferencia (Overfitting): 0.0243
+
+6. Importancia de las Características
+- age: 0.3752
+- avg_glucose_level: 0.2086
+- bmi: 0.1780
+- smoking_status: 0.0533
+- work_type: 0.0394
+- hypertension: 0.0386
+- ever_married: 0.0385
+- gender: 0.0264
+- Residence_type: 0.0247
+- heart_disease: 0.0173

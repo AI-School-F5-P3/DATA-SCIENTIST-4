@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/avkav/Documents/BootcampAI/ProyectoDataScientist-Grupo4/DATA-SCIENTIST-4/mlruns/0/db0fbe518fc3407a90f1644f6002f1ee/artifacts
+end_time: 1729077568015
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: db0fbe518fc3407a90f1644f6002f1ee
+run_name: skillful-dolphin-453
+run_uuid: db0fbe518fc3407a90f1644f6002f1ee
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1729077565130
+status: 3
+tags: []
+user_id: avkav

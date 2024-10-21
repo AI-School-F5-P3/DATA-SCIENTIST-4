@@ -1,0 +1,16 @@
+artifact_uri: file:///C:/Users/avkav/Documents/BootcampAI/ProyectoDataScientist-Grupo4/DATA-SCIENTIST-4/mlruns/0/6e79799cce674ef1a4cd8db11316b889/artifacts
+deleted_time: 1729500673305
+end_time: 1729077766956
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 6e79799cce674ef1a4cd8db11316b889
+run_name: legendary-roo-338
+run_uuid: 6e79799cce674ef1a4cd8db11316b889
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1729077764141
+status: 3
+tags: []
+user_id: avkav
