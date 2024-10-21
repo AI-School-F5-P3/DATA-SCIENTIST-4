@@ -6,7 +6,7 @@
     <div class="col-md-12">
         <form method="post" action="/upload/" enctype="multipart/form-data">
             {% csrf_token %}
-            <input type="file" name="file" accept=".csv" required">
+            <input type="file" name="file" accept=".csv" required>
             <button type="submit" class="btn text-light fw-bold" style="background-color:#3e78b6;">Upload CSV</button>
         </form>
     </div>

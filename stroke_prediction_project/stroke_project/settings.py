@@ -33,8 +33,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1']
-
+ALLOWED_HOSTS = ['*'] # cambiar a ['*'] para permitir todas las conexiones
 
 # Application definition
 
@@ -90,7 +89,7 @@ DATABASES = {
         'NAME': os.getenv('DB_NAME'),  # Lee el nombre de la base de datos desde .env
         'USER': os.getenv('DB_USER'),  # Lee el usuario desde .env
         'PASSWORD': os.getenv('DB_PASSWORD'),  # Lee la contraseña desde .env
-        'HOST': 'db',  # Si ejecutamos desde docker poner 'db', si no, 'localhost'
+        'HOST': 'localhost',  # Si ejecutamos desde docker poner 'db', si no, 'localhost'
         'PORT': os.getenv('DB_PORT', '3306'),  # Lee el puerto desde .env
     }
 }
