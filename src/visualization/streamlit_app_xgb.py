@@ -42,12 +42,12 @@ st.title('Stroke Risk Predictor')
 
 st.write('Please enter the following patient data:')
 
-# Mappings for categorical variables
+# Mapeos para variables categóricas
 gender_map = {'Male': 0, 'Female': 1}
 ever_married_map = {'No': 0, 'Yes': 1}
-work_type_map = {'Private': 0, 'Self-employed': 1, 'Govt_job': 2, 'children': 3, 'Never_worked': 4}
-residence_type_map = {'Urban': 0, 'Rural': 1}
-smoking_status_map = {'never smoked': 0, 'formerly smoked': 1, 'smokes': 2, 'Unknown': 3}
+work_type_map = {'Private': 3, 'Self-employed': 2, 'Govt_job': 0, 'children': 1}
+residence_type_map = {'Urban': 1, 'Rural': 0}
+smoking_status_map = {'never smoked': 3, 'formerly smoked': 1, 'smokes': 0, 'Unknown': 2}
 
 # Create inputs for each feature
 gender = st.selectbox('Gender', list(gender_map.keys()))

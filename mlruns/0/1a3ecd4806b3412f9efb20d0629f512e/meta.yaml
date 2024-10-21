@@ -1,8 +1,9 @@
 artifact_uri: file:///C:/Users/avkav/Documents/BootcampAI/ProyectoDataScientist-Grupo4/DATA-SCIENTIST-4/mlruns/0/1a3ecd4806b3412f9efb20d0629f512e/artifacts
+deleted_time: 1729076672347
 end_time: 1728892832743
 entry_point_name: ''
 experiment_id: '0'
-lifecycle_stage: active
+lifecycle_stage: deleted
 run_id: 1a3ecd4806b3412f9efb20d0629f512e
 run_name: likeable-roo-315
 run_uuid: 1a3ecd4806b3412f9efb20d0629f512e

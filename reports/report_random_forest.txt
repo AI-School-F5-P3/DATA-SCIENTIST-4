@@ -6,60 +6,60 @@ Total de muestras: 4981
 Características: 10
 Distribución de clases: {0: 4733, 1: 248}
 
-2. Mejor Umbral Encontrado: 0.51
+2. Mejor Umbral Encontrado: 0.27
 
 3. Hiperparámetros del Mejor Modelo
-- class_weight: {0: 0.5261990281005705, 1: 10.04233870967742}
-- max_depth: 30
+- class_weight: balanced
+- max_depth: None
 - min_samples_leaf: 1
 - min_samples_split: 2
 - n_estimators: 300
 
 4. Métricas del Modelo
-- Accuracy: 0.9630
-- Precision: 0.9525
-- Recall: 0.9747
-- F1: 0.9635
-- Auc_roc: 0.9916
+- Accuracy: 0.8335
+- Precision: 0.1548
+- Recall: 0.5200
+- F1: 0.2385
+- Auc_roc: 0.8165
 
 5. Validación Cruzada
-Scores de validación cruzada: [0.95643564 0.95313531 0.95112285 0.94848085 0.95046235]
-Precisión promedio: 0.9519
+Scores de validación cruzada: [0.92937294 0.96105611 0.96367239 0.97622193 0.96169089]
+Precisión promedio: 0.9584
 
 6. Detección de Overfitting
-Precisión en entrenamiento: 0.9904
-Precisión en prueba: 0.9926
-Diferencia (Overfitting): -0.0022
+Precisión en entrenamiento: 0.6195
+Precisión en prueba: 0.9910
+Diferencia (Overfitting): -0.3715
 
 7. Importancia de las Características
-- age: 0.3767
-- bmi: 0.1795
-- avg_glucose_level: 0.1720
-- smoking_status: 0.0718
-- work_type: 0.0593
-- Residence_type: 0.0397
-- gender: 0.0384
-- ever_married: 0.0349
-- hypertension: 0.0158
-- heart_disease: 0.0119
+- age: 0.3954
+- avg_glucose_level: 0.1961
+- bmi: 0.1846
+- smoking_status: 0.0521
+- work_type: 0.0370
+- ever_married: 0.0354
+- hypertension: 0.0303
+- heart_disease: 0.0234
+- gender: 0.0230
+- Residence_type: 0.0228
 
 8. Evaluación de Umbrales
-Threshold: 0.10 | Precision: 0.7635 | Recall: 0.9989 | F1 Score: 0.8655
-Threshold: 0.15 | Precision: 0.8055 | Recall: 0.9926 | F1 Score: 0.8893
-Threshold: 0.20 | Precision: 0.8444 | Recall: 0.9916 | F1 Score: 0.9121
-Threshold: 0.25 | Precision: 0.8653 | Recall: 0.9905 | F1 Score: 0.9237
-Threshold: 0.30 | Precision: 0.8913 | Recall: 0.9873 | F1 Score: 0.9369
-Threshold: 0.35 | Precision: 0.9113 | Recall: 0.9873 | F1 Score: 0.9478
-Threshold: 0.40 | Precision: 0.9225 | Recall: 0.9810 | F1 Score: 0.9509
-Threshold: 0.45 | Precision: 0.9373 | Recall: 0.9789 | F1 Score: 0.9576
-Threshold: 0.50 | Precision: 0.9496 | Recall: 0.9747 | F1 Score: 0.9620
-Threshold: 0.55 | Precision: 0.9589 | Recall: 0.9609 | F1 Score: 0.9599
-Threshold: 0.60 | Precision: 0.9667 | Recall: 0.9504 | F1 Score: 0.9585
-Threshold: 0.65 | Precision: 0.9716 | Recall: 0.9409 | F1 Score: 0.9560
-Threshold: 0.70 | Precision: 0.9765 | Recall: 0.9219 | F1 Score: 0.9484
-Threshold: 0.75 | Precision: 0.9790 | Recall: 0.8870 | F1 Score: 0.9307
-Threshold: 0.80 | Precision: 0.9826 | Recall: 0.8353 | F1 Score: 0.9030
-Threshold: 0.85 | Precision: 0.9892 | Recall: 0.7761 | F1 Score: 0.8698
+Threshold: 0.10 | Precision: 0.1193 | Recall: 0.8400 | F1 Score: 0.2090
+Threshold: 0.15 | Precision: 0.1296 | Recall: 0.7000 | F1 Score: 0.2188
+Threshold: 0.20 | Precision: 0.1389 | Recall: 0.6000 | F1 Score: 0.2256
+Threshold: 0.25 | Precision: 0.1453 | Recall: 0.5200 | F1 Score: 0.2271
+Threshold: 0.30 | Precision: 0.1497 | Recall: 0.4400 | F1 Score: 0.2234
+Threshold: 0.35 | Precision: 0.1613 | Recall: 0.4000 | F1 Score: 0.2299
+Threshold: 0.40 | Precision: 0.1474 | Recall: 0.2800 | F1 Score: 0.1931
+Threshold: 0.45 | Precision: 0.1429 | Recall: 0.2200 | F1 Score: 0.1732
+Threshold: 0.50 | Precision: 0.1587 | Recall: 0.2000 | F1 Score: 0.1770
+Threshold: 0.55 | Precision: 0.1163 | Recall: 0.1000 | F1 Score: 0.1075
+Threshold: 0.60 | Precision: 0.1081 | Recall: 0.0800 | F1 Score: 0.0920
+Threshold: 0.65 | Precision: 0.0938 | Recall: 0.0600 | F1 Score: 0.0732
+Threshold: 0.70 | Precision: 0.0435 | Recall: 0.0200 | F1 Score: 0.0274
+Threshold: 0.75 | Precision: 0.0588 | Recall: 0.0200 | F1 Score: 0.0299
+Threshold: 0.80 | Precision: 0.0833 | Recall: 0.0200 | F1 Score: 0.0323
+Threshold: 0.85 | Precision: 0.0000 | Recall: 0.0000 | F1 Score: 0.0000
 
 9. ROC AUC con Validación Cruzada
-Mean AUC: 0.9892 (±0.0008)
+Mean AUC: 0.8094 (±0.0077)

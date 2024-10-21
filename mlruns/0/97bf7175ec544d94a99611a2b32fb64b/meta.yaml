@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/avkav/Documents/BootcampAI/ProyectoDataScientist-Grupo4/DATA-SCIENTIST-4/mlruns/0/97bf7175ec544d94a99611a2b32fb64b/artifacts
+end_time: 1729076041300
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 97bf7175ec544d94a99611a2b32fb64b
+run_name: adorable-fly-458
+run_uuid: 97bf7175ec544d94a99611a2b32fb64b
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1729076038199
+status: 3
+tags: []
+user_id: avkav

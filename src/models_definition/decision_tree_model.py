@@ -258,11 +258,20 @@ def generate_report(model, X_train, X_test, y_train, y_test, X, y, feature_names
         raise
 
 if __name__ == "__main__":
+    
     X_scaled, y, feature_names, scaler, class_weight_dict = load_and_preprocess_data(file_path)
+    
     save_scaled_data(X_scaled, y, feature_names, 'data/processed/stroke_dataset_scaled.csv')
-    X_resampled, y_resampled = apply_smote(X_scaled, y)
-    X_train, X_test, y_train, y_test = train_test_split(X_resampled, y_resampled, test_size=0.2, random_state=42)
-    best_model, metrics, y_pred_adjusted, y_pred_proba, best_params, best_threshold = train_and_evaluate_model(X_train, X_test, y_train, y_test, class_weight_dict)
+    
+    # Dividir los datos en entrenamiento y prueba antes de aplicar SMOTE
+    X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42, stratify=y)
+
+    # Aplicar SMOTE solo a los datos de entrenamiento
+    X_train_resampled, y_train_resampled = apply_smote(X_train, y_train)
+
+    # Entrenar y evaluar el modelo
+    best_model, metrics, y_pred_adjusted, y_pred_proba, best_params, best_threshold = train_and_evaluate_model(X_train_resampled, X_test, y_train_resampled, y_test, class_weight_dict)
+
     cv_scores = cross_validation_evaluate_model(X_train, y_train, best_model)
     overfitting_metrics = detect_overfitting(best_model, X_train, y_train, X_test, y_test)
 

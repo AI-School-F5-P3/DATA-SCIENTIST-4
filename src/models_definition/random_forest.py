@@ -59,19 +59,18 @@ def save_scaled_data(X_scaled, y, columns, output_path):
         logging.error(f"Error al guardar los datos escalados: {str(e)}")
         raise
 
+ 
+
 def apply_smote(X, y):
     try:
-        # Medir el tiempo de ejecución
         start_time = time.time()
         smote = SMOTE(random_state=42)
         X_resampled, y_resampled = smote.fit_resample(X, y)
         end_time = time.time()
         logging.info(f"Distribución de clases después de SMOTE: {dict(pd.Series(y_resampled).value_counts())}")
         execution_time = end_time - start_time
-        print(f"Tiempo de ejecución: {execution_time:.2f} segundos")
+        print(f"Tiempo de ejecución de SMOTE: {execution_time:.2f} segundos")
         return X_resampled, y_resampled
-        # Calcular y mostrar el tiempo de ejecución
-        
     except Exception as e:
         logging.error(f"Error al aplicar SMOTE: {str(e)}")
         raise
@@ -113,6 +112,17 @@ def detect_overfitting(model, X_train, y_train, X_test, y_test):
     except Exception as e:
         logging.error(f"Error al detectar overfitting: {str(e)}")
         raise
+
+def save_test_data(X_test, y_test, columns, output_path):
+    try:
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+        test_df = pd.DataFrame(X_test, columns=columns)
+        test_df['stroke'] = y_test
+        test_df.to_csv(output_path, index=False)
+        logging.info(f"Datos de testing guardados en '{output_path}'.")
+    except Exception as e:
+        logging.error(f"Error al guardar los datos de testing: {str(e)}")
+        raise     
 
 def evaluate_thresholds(y_true, y_pred_proba):
     thresholds = np.arange(0.1, 0.9, 0.05)
@@ -353,14 +363,17 @@ if __name__ == "__main__":
     # Guardar los datos escalados (por si lo necesitas en el futuro)
     save_scaled_data(X_scaled, y, feature_names, 'data/processed/stroke_dataset_scaled.csv')
 
-    # Aplicar SMOTE
-    X_resampled, y_resampled = apply_smote(X_scaled, y)
+    # Dividir los datos en entrenamiento y prueba antes de aplicar SMOTE
+    X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42, stratify=y)
 
-    # Dividir los datos en entrenamiento y prueba
-    X_train, X_test, y_train, y_test = train_test_split(X_resampled, y_resampled, test_size=0.2, random_state=42, stratify=y_resampled)
+    # Guardar los datos de test para hacer la prueba
+    save_test_data(X_test, y_test, feature_names, 'data/processed/stroke_dataset_test.csv')
+    
+    # Aplicar SMOTE solo a los datos de entrenamiento
+    X_train_resampled, y_train_resampled = apply_smote(X_train, y_train)
 
     # Entrenar y evaluar el modelo
-    best_model, metrics, y_pred_adjusted, y_pred_proba, best_params, best_threshold = train_and_evaluate_model(X_train, X_test, y_train, y_test, class_weight_dict)
+    best_model, metrics, y_pred_adjusted, y_pred_proba, best_params, best_threshold = train_and_evaluate_model(X_train_resampled, X_test, y_train_resampled, y_test, class_weight_dict)
 
     # Evaluar umbrales
     threshold_results = evaluate_thresholds(y_test, y_pred_proba)
@@ -369,13 +382,14 @@ if __name__ == "__main__":
     plot_precision_recall_curve(y_test, y_pred_proba)
 
     # Realizar validación cruzada para ROC y AUC
-    mean_auc, std_auc = cross_validate_roc_auc(X_resampled, y_resampled, best_model)
+    # Nota: Aquí usamos X_scaled y y originales para la validación cruzada
+    mean_auc, std_auc = cross_validate_roc_auc(X_scaled, y, best_model)
     
-     # Realizar la validación cruzada
-    cv_scores = cross_validation_evaluate_model(X_train, y_train, best_model)
+    # Realizar la validación cruzada
+    cv_scores = cross_validation_evaluate_model(X_train_resampled, y_train_resampled, best_model)
 
     # Detectar overfitting
-    overfitting_metrics = detect_overfitting(best_model, X_train, y_train, X_test, y_test)
+    overfitting_metrics = detect_overfitting(best_model, X_train_resampled, y_train_resampled, X_test, y_test)
 
     # Guardar modelo y escalador
     model_dir = f'models/{model_name.lower().replace(" ", "_")}'
@@ -400,7 +414,7 @@ if __name__ == "__main__":
     # Generar un informe detallado con los nuevos parámetros
     generate_report(
         best_model, 
-        X_train, X_test, y_train, y_test, 
+        X_train_resampled, X_test, y_train_resampled, y_test, 
         X_scaled, y, feature_names, 
         metrics, best_params, class_weight_dict, 
         best_threshold, cv_scores, overfitting_metrics,

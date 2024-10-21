@@ -1,8 +1,9 @@
 artifact_uri: file:///C:/Users/avkav/Documents/BootcampAI/ProyectoDataScientist-Grupo4/DATA-SCIENTIST-4/mlruns/0/3e046e7535344b29a984d9355d3909a9/artifacts
+deleted_time: 1729076672379
 end_time: 1728660256991
 entry_point_name: ''
 experiment_id: '0'
-lifecycle_stage: active
+lifecycle_stage: deleted
 run_id: 3e046e7535344b29a984d9355d3909a9
 run_name: gaudy-rook-863
 run_uuid: 3e046e7535344b29a984d9355d3909a9

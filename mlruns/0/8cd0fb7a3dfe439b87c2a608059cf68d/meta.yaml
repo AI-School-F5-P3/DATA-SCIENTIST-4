@@ -1,8 +1,9 @@
 artifact_uri: file:///C:/Users/avkav/Documents/BootcampAI/ProyectoDataScientist-Grupo4/DATA-SCIENTIST-4/mlruns/0/8cd0fb7a3dfe439b87c2a608059cf68d/artifacts
+deleted_time: 1729076672366
 end_time: 1728679468062
 entry_point_name: ''
 experiment_id: '0'
-lifecycle_stage: active
+lifecycle_stage: deleted
 run_id: 8cd0fb7a3dfe439b87c2a608059cf68d
 run_name: legendary-newt-279
 run_uuid: 8cd0fb7a3dfe439b87c2a608059cf68d

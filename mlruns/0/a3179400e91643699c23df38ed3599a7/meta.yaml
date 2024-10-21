@@ -1,8 +1,9 @@
 artifact_uri: file:///C:/Users/avkav/Documents/BootcampAI/ProyectoDataScientist-Grupo4/DATA-SCIENTIST-4/mlruns/0/a3179400e91643699c23df38ed3599a7/artifacts
+deleted_time: 1729076672367
 end_time: 1728857366847
 entry_point_name: ''
 experiment_id: '0'
-lifecycle_stage: active
+lifecycle_stage: deleted
 run_id: a3179400e91643699c23df38ed3599a7
 run_name: zealous-pig-854
 run_uuid: a3179400e91643699c23df38ed3599a7

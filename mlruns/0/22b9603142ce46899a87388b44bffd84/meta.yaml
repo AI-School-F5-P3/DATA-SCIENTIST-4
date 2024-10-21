@@ -1,0 +1,16 @@
+artifact_uri: file:///C:/Users/avkav/Documents/BootcampAI/ProyectoDataScientist-Grupo4/DATA-SCIENTIST-4/mlruns/0/22b9603142ce46899a87388b44bffd84/artifacts
+deleted_time: 1729500673306
+end_time: 1729078042150
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 22b9603142ce46899a87388b44bffd84
+run_name: adorable-worm-99
+run_uuid: 22b9603142ce46899a87388b44bffd84
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1729078039595
+status: 3
+tags: []
+user_id: avkav

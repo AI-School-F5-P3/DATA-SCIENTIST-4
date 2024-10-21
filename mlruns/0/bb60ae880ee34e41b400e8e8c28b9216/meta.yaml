@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/avkav/Documents/BootcampAI/ProyectoDataScientist-Grupo4/DATA-SCIENTIST-4/mlruns/0/bb60ae880ee34e41b400e8e8c28b9216/artifacts
+end_time: 1729077204711
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: bb60ae880ee34e41b400e8e8c28b9216
+run_name: secretive-shad-842
+run_uuid: bb60ae880ee34e41b400e8e8c28b9216
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1729077201229
+status: 3
+tags: []
+user_id: avkav

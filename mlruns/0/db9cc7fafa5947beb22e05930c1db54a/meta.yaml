@@ -1,8 +1,9 @@
 artifact_uri: file:///C:/Users/avkav/Documents/BootcampAI/ProyectoDataScientist-Grupo4/DATA-SCIENTIST-4/mlruns/0/db9cc7fafa5947beb22e05930c1db54a/artifacts
+deleted_time: 1729500640985
 end_time: 1728996650251
 entry_point_name: ''
 experiment_id: '0'
-lifecycle_stage: active
+lifecycle_stage: deleted
 run_id: db9cc7fafa5947beb22e05930c1db54a
 run_name: placid-sheep-791
 run_uuid: db9cc7fafa5947beb22e05930c1db54a

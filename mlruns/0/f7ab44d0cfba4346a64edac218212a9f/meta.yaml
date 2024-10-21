@@ -1,0 +1,16 @@
+artifact_uri: file:///C:/Users/avkav/Documents/BootcampAI/ProyectoDataScientist-Grupo4/DATA-SCIENTIST-4/mlruns/0/f7ab44d0cfba4346a64edac218212a9f/artifacts
+deleted_time: 1729500625328
+end_time: 1729235553538
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: f7ab44d0cfba4346a64edac218212a9f
+run_name: awesome-eel-874
+run_uuid: f7ab44d0cfba4346a64edac218212a9f
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1729235538760
+status: 3
+tags: []
+user_id: avkav
