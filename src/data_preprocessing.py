@@ -120,16 +120,16 @@ def procesado(file_path):
         
         df.to_csv(ruta + 'data/processed/df.csv',index=False)
         print(df.columns)
+        
         return df
     else:
         print("No se pudieron cargar los datos. Verifica la ruta del archivo y su existencia.")
         return None
 
-""" 
+
 # Ejemplo de uso
 if __name__ == "__main__":
     
     file_path = "C:/4_F5/017_track_01/DATA-SCIENTIST-4/data/raw/stroke_dataset.csv"  # Reemplazar con la ruta correcta
     procesado(file_path)
-    
- """
+    print(procesado(file_path))

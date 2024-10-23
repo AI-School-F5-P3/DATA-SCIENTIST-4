@@ -10,6 +10,10 @@ from datetime import datetime
 
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'api'))
+# Inserta el path al script de preprocesamiento
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
+from data_preprocessing import procesado 
+
 from app import StrokeFeatures
 st.title('Predicción de Accidente Cerebrovascular')
 
@@ -49,6 +53,10 @@ stroke_features = StrokeFeatures(
     stroke=0,  # Asumimos que es 0 por defecto, ya que estamos prediciendo
     prediction_time=datetime.now().isoformat()
 )
+
+# Aplicar el preprocesado a los datos del formulario
+data_preprocessed = procesado(stroke_features)  # Llamada a tu función procesado
+
 
 if st.button('Predecir'):
     # Preparar los datos para la API

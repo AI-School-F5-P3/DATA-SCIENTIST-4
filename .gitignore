@@ -198,3 +198,16 @@ MANIFEST
 models/*.pkl
 models/*.h5
 data/processed/df.csv
+data/processed/X_test.csv
+
+
+# Ignorar archivos de base de datos
+*.db
+
+# Otras configuraciones de ignorar
+*.pyc
+__pycache__/
+
+
+# Ignorar archivos de entrenamiento de redes neuronales
+*.h5
