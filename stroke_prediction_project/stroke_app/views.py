@@ -1,4 +1,3 @@
-import pickle
 import pandas as pd
 from django.shortcuts import render, redirect
 from stroke_app.forms import StrokePredictionForm
