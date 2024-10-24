@@ -193,12 +193,23 @@ overfitting = train_auc - metrics_optimized['auc']
 print(f"\nTrain AUC: {train_auc:.4f}")
 print(f"Overfitting: {overfitting:.4f}")
 
-# Guardar el mejor modelo en un archivo pickle
-best_model_filename = f'best_stroke_prediction_model_{best_model[0].replace(" ", "_").lower()}.pkl'
-joblib.dump(best_pipeline, best_model_filename)
-print(f"\nBest model saved as: {best_model_filename}")
+# Crear el diccionario con el modelo y los preprocesadores
+full_pipeline = {
+    'model': best_pipeline,  # El pipeline que incluye SMOTE y el modelo optimizado
+    'scaler': preprocessor.named_transformers_['num'],  # StandardScaler para las variables numéricas
+    'encoder': preprocessor.named_transformers_['cat']  # OrdinalEncoder para las variables categóricas
+}
 
-# Guardar el preprocesador en un archivo pickle
-preprocessor_filename = 'best_stroke_preprocessor.pkl'
-joblib.dump(preprocessor, preprocessor_filename)
-print(f"Preprocessor saved as: {preprocessor_filename}")
+# Guardar el pipeline completo en un solo archivo pickle
+joblib.dump(full_pipeline, 'full_stroke_prediction_pipeline.pkl')
+print(f"\nFull pipeline saved as: 'full_stroke_prediction_pipeline.pkl'")
+
+# # Guardar el mejor modelo en un archivo pickle
+# best_model_filename = f'best_stroke_prediction_model_{best_model[0].replace(" ", "_").lower()}.pkl'
+# joblib.dump(best_pipeline, best_model_filename)
+# print(f"\nBest model saved as: {best_model_filename}")
+
+# # Guardar el preprocesador en un archivo pickle
+# preprocessor_filename = 'best_stroke_preprocessor.pkl'
+# joblib.dump(preprocessor, preprocessor_filename)
+# print(f"Preprocessor saved as: {preprocessor_filename}")

@@ -142,10 +142,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-MODEL_PATH = os.path.join(BASE_DIR, 'notebooks', 'best_stroke_prediction_model_logistic_regression.pkl')
-
-SCALER_PATH = os.path.join(BASE_DIR, 'notebooks', 'scaler.pkl')  # Ajusta la ruta según donde esté tu scaler
-ENCODER_PATH = os.path.join(BASE_DIR, 'notebooks', 'encoder.pkl')  # Ajusta la ruta según donde esté tu encoder
+MODEL_PATH = os.path.join(BASE_DIR, 'notebooks', 'full_stroke_prediction_pipeline.pkl')
 
 MLFLOW_TRACKING_URI = 'http://localhost:5000'  # Cambia a la URL de tu servidor MLflow si lo necesitas
 
