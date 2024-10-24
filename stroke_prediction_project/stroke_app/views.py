@@ -24,12 +24,14 @@ def predict_stroke(request):
     context = {'form': form}
     
     if request.method == 'POST':
+        print(request.POST)
         form = StrokePredictionForm(request.POST)
         if form.is_valid():
             try:
                 # Convertir Yes/No a valores booleanos para la base de datos
                 hypertension_bool = form.cleaned_data['hypertension'] == 'Yes'
                 heart_disease_bool = form.cleaned_data['heart_disease'] == 'Yes'
+                ever_married_bool = form.cleaned_data['ever_married'] == 'Yes'
                 
                 # Preparar datos para el modelo
                 input_data = pd.DataFrame([{
@@ -45,9 +47,13 @@ def predict_stroke(request):
                     'smoking_status': form.cleaned_data['smoking_status']
                 }])
 
-                # Realizar predicción
-                prediction_proba = model.predict_proba(input_data)[0]
-                prediction = model.predict(input_data)[0]
+                try:
+                    # Realizar predicción
+                    prediction_proba = model.predict_proba(input_data)[0]
+                    prediction = model.predict(input_data)[0]
+                except Exception as e:
+                    print(f"Error en la predicción: {e}")
+                    context['error'] = str(e)
                 
                 # Determinar el riesgo y la probabilidad
                 stroke_risk = 'High' if prediction == 1 else 'Low'
@@ -61,7 +67,7 @@ def predict_stroke(request):
                     avg_glucose_level=form.cleaned_data['avg_glucose_level'],
                     bmi=form.cleaned_data['bmi'],
                     gender=form.cleaned_data['gender'],
-                    ever_married=form.cleaned_data['ever_married'],
+                    ever_married=ever_married_bool,  # Guardamos el booleano
                     work_type=form.cleaned_data['work_type'],
                     Residence_type=form.cleaned_data['Residence_type'],
                     smoking_status=form.cleaned_data['smoking_status'],
