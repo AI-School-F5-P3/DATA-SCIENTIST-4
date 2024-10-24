@@ -1,0 +1,7 @@
+
+
+
+
+uvicorn api.app:app --reload  
+
+streamlit run api/stream.py
