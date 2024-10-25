@@ -81,24 +81,51 @@
     </div>
 </form>
   
-<!-- Modal -->
+<!-- Modal mejorado -->
 <div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="resultModalLabel">Prediction Result</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="resultModalLabel">
+                    <i class="bi bi-heart-pulse"></i> Stroke Risk Prediction
+                </h5>
+                <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <h4 class="text-secondary">Stroke Risk: 
+                    <span class="fw-bold {% if risk == 'High' %}text-danger{% else %}text-success{% endif %}">
+                        {{ risk }}
+                    </span>
+                </h4>
+                <p class="fs-5 text-secondary">Probability: <span class="fw-bold">{{ probability }}</span></p>
+                
+                <!-- Barra de progreso para la probabilidad -->
+                <div class="progress my-4" style="height: 30px;">
+                    <div class="progress-bar {% if risk == 'High' %}bg-danger{% else %}bg-success{% endif %}" role="progressbar" 
+                        style="width: {{ probability }};" aria-valuenow="{{ probability }}" aria-valuemin="0" aria-valuemax="100">
+                        {{ probability }}
+                    </div>
+                </div>
+
+                <!-- Ícono visual de alerta -->
+                {% if risk == 'High' %}
+                    <div class="alert alert-danger fs-5 d-flex align-items-center" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill fs-4 me-2"></i>
+                        High Risk! Consider consulting your doctor.
+                    </div>
+                {% else %}
+                    <div class="alert alert-success fs-5 d-flex align-items-center" role="alert">
+                        <i class="bi bi-check-circle-fill fs-4 me-2"></i>
+                        Low Risk. Keep maintaining a healthy lifestyle!
+                    </div>
+                {% endif %}
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">Close</button>
+            </div>
         </div>
-        <div class="modal-body">
-          <p>Stroke Risk: {{ risk }}</p>
-          <p>Probability: {{ probability }}</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
-      </div>
     </div>
-  </div>
+</div>
   
 <script>
     document.addEventListener('DOMContentLoaded', function() {

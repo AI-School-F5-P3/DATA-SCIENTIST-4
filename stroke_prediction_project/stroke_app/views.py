@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from stroke_app.forms import StrokePredictionForm
 from stroke_app.models import StrokePrediction
 from django.conf import settings
@@ -7,6 +7,14 @@ import pandas as pd
 import joblib
 import numpy as np
 from django.core.exceptions import ValidationError
+import matplotlib.pyplot as plt
+import seaborn as sns
+from io import BytesIO
+import base64
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import threading
 
 def load_model():
     model_path = settings.MODEL_PATH
@@ -108,6 +116,10 @@ def upload_csv_and_predict(request):
         if all(col in df.columns for col in required_columns):
             # Asegúrate de que las columnas estén en el mismo orden y tipo que el modelo espera
             input_data = df[required_columns]  # Asegúrate de que solo las columnas necesarias estén presentes
+            
+             # Convierte "Yes" y "No" a valores booleanos en la columna 'ever_married'
+            df['ever_married'] = df['ever_married'].map({'Yes': True, 'No': False})
+            
             predictions = model.predict(input_data)
 
             # Agregar predicciones al DataFrame
@@ -134,3 +146,63 @@ def upload_csv_and_predict(request):
             return render(request, 'stroke_app/upload.html', {'error': 'Faltan columnas en el archivo CSV'})
 
     return render(request, 'stroke_app/upload.html')
+
+def create_plots(data, plots):
+    # Gráfico 1: Rango de edad vs. riesgo de ictus
+    plt.figure(figsize=(10, 6))
+    sns.histplot(data=data, x='age', hue='stroke_risk', multiple='stack', kde=True)
+    plt.title("Distribución de Edad y Riesgo de Ictus")
+    plt.xlabel("Edad")
+    plt.ylabel("Frecuencia")
+    
+    # Guardar la imagen en base64
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    plots['age_risk_plot'] = base64.b64encode(buffer.getvalue()).decode('utf-8')
+    plt.close()
+
+    # Gráfico 2: Nivel de glucosa vs. riesgo de ictus
+    plt.figure(figsize=(10, 6))
+    sns.histplot(data=data, x='avg_glucose_level', hue='stroke_risk', multiple='stack', kde=True)
+    plt.title("Distribución de Glucosa y Riesgo de Ictus")
+    plt.xlabel("Nivel de Glucosa Promedio")
+    plt.ylabel("Frecuencia")
+
+    # Guardar la imagen en base64
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    plots['glucose_risk_plot'] = base64.b64encode(buffer.getvalue()).decode('utf-8')
+    plt.close()
+
+    # Gráfico 3: Porcentaje de riesgo de ictus por género
+    plt.figure(figsize=(8, 5))
+    sns.countplot(data=data, x='gender', hue='stroke_risk')
+    plt.title("Distribución de Riesgo de Ictus por Género")
+    plt.xlabel("Género")
+    plt.ylabel("Cantidad")
+
+    # Guardar la imagen en base64
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    plots['gender_risk_plot'] = base64.b64encode(buffer.getvalue()).decode('utf-8')
+    plt.close()
+
+def success_view(request):
+    # Carga los datos desde el modelo
+    predictions = StrokePrediction.objects.all()
+    
+    # Convertimos los datos a un DataFrame
+    data = pd.DataFrame(list(predictions.values()))
+
+    # Configura los gráficos
+    plots = {}
+
+    # Crear los gráficos en un hilo separado
+    plot_thread = threading.Thread(target=create_plots, args=(data, plots))
+    plot_thread.start()
+    plot_thread.join()  # Espera a que el hilo termine
+
+    return render(request, 'stroke_app/success.html', {'plots': plots})
