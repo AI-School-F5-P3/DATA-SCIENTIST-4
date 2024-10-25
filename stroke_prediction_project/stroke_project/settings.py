@@ -89,7 +89,7 @@ DATABASES = {
         'NAME': os.getenv('DB_NAME'),  # Lee el nombre de la base de datos desde .env
         'USER': os.getenv('DB_USER'),  # Lee el usuario desde .env
         'PASSWORD': os.getenv('DB_PASSWORD'),  # Lee la contraseña desde .env
-        'HOST': 'localhost',  # Si ejecutamos desde docker poner 'db', si no, 'localhost'
+        'HOST': 'localhost',  # Si desplegamos desde docker poner 'db', si no, 'localhost'
         'PORT': os.getenv('DB_PORT', '3306'),  # Lee el puerto desde .env
     }
 }

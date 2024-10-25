@@ -148,46 +148,57 @@ def upload_csv_and_predict(request):
     return render(request, 'stroke_app/upload.html')
 
 def create_plots(data, plots):
-    # Gráfico 1: Rango de edad vs. riesgo de ictus
+    # Gráfico 1: Distribución de Stroke por Rango de Edad
     plt.figure(figsize=(10, 6))
-    sns.histplot(data=data, x='age', hue='stroke_risk', multiple='stack', kde=True)
-    plt.title("Distribución de Edad y Riesgo de Ictus")
+    sns.countplot(data=data[data['stroke_risk'] == 'High'], x='age', palette='Blues')
+    plt.title("Cantidad de Pacientes con Alto Riesgo de Ictus por Edad")
     plt.xlabel("Edad")
-    plt.ylabel("Frecuencia")
+    plt.ylabel("Cantidad de Casos de Ictus")
     
-    # Guardar la imagen en base64
+    # Guardar el gráfico en base64
     buffer = BytesIO()
     plt.savefig(buffer, format='png')
     buffer.seek(0)
-    plots['age_risk_plot'] = base64.b64encode(buffer.getvalue()).decode('utf-8')
+    plots['age_stroke_plot'] = base64.b64encode(buffer.getvalue()).decode('utf-8')
     plt.close()
 
-    # Gráfico 2: Nivel de glucosa vs. riesgo de ictus
+    # Gráfico 2: Distribución de Stroke por Nivel de Glucosa
     plt.figure(figsize=(10, 6))
-    sns.histplot(data=data, x='avg_glucose_level', hue='stroke_risk', multiple='stack', kde=True)
-    plt.title("Distribución de Glucosa y Riesgo de Ictus")
+    sns.countplot(data=data[data['stroke_risk'] == 'High'], x='avg_glucose_level', palette='Blues')
+    plt.title("Cantidad de Pacientes con Alto Riesgo de Ictus por Nivel de Glucosa")
     plt.xlabel("Nivel de Glucosa Promedio")
-    plt.ylabel("Frecuencia")
-
-    # Guardar la imagen en base64
+    plt.ylabel("Cantidad de Casos de Ictus")
+    
     buffer = BytesIO()
     plt.savefig(buffer, format='png')
     buffer.seek(0)
-    plots['glucose_risk_plot'] = base64.b64encode(buffer.getvalue()).decode('utf-8')
+    plots['glucose_stroke_plot'] = base64.b64encode(buffer.getvalue()).decode('utf-8')
     plt.close()
 
-    # Gráfico 3: Porcentaje de riesgo de ictus por género
+    # Gráfico 3: Distribución de Stroke por Hipertensión
     plt.figure(figsize=(8, 5))
-    sns.countplot(data=data, x='gender', hue='stroke_risk')
-    plt.title("Distribución de Riesgo de Ictus por Género")
-    plt.xlabel("Género")
-    plt.ylabel("Cantidad")
+    sns.countplot(data=data[data['stroke_risk'] == 'High'], x='hypertension', palette='Blues')
+    plt.title("Cantidad de Pacientes con Alto Riesgo de Ictus y Hipertensión")
+    plt.xlabel("Hipertensión (0 = No, 1 = Sí)")
+    plt.ylabel("Cantidad de Casos de Ictus")
 
-    # Guardar la imagen en base64
     buffer = BytesIO()
     plt.savefig(buffer, format='png')
     buffer.seek(0)
-    plots['gender_risk_plot'] = base64.b64encode(buffer.getvalue()).decode('utf-8')
+    plots['hypertension_stroke_plot'] = base64.b64encode(buffer.getvalue()).decode('utf-8')
+    plt.close()
+
+    # Gráfico 4: Distribución de Stroke por Enfermedad Cardíaca
+    plt.figure(figsize=(8, 5))
+    sns.countplot(data=data[data['stroke_risk'] == 'High'], x='heart_disease', palette='Blues')
+    plt.title("Cantidad de Pacientes con Alto Riesgo de Ictus y Enfermedad Cardíaca")
+    plt.xlabel("Enfermedad Cardíaca (0 = No, 1 = Sí)")
+    plt.ylabel("Cantidad de Casos de Ictus")
+
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    plots['heart_disease_stroke_plot'] = base64.b64encode(buffer.getvalue()).decode('utf-8')
     plt.close()
 
 def success_view(request):
@@ -196,6 +207,9 @@ def success_view(request):
     
     # Convertimos los datos a un DataFrame
     data = pd.DataFrame(list(predictions.values()))
+    
+    # Filtrar solo las categorías que deseas
+    data = data[data['stroke_risk'].isin(['High', 'Low'])]
 
     # Configura los gráficos
     plots = {}

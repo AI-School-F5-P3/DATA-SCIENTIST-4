@@ -6,18 +6,22 @@
     
     <h2>Gráficos Generados:</h2>
     {% if plots %}
-        <div>
-            <h3>Distribución de Edad y Riesgo de Ictus</h3>
-            <img src="data:image/png;base64,{{ plots.age_risk_plot }}" alt="Distribución de Edad y Riesgo de Ictus">
-        </div>
-        <div>
-            <h3>Distribución de Glucosa y Riesgo de Ictus</h3>
-            <img src="data:image/png;base64,{{ plots.glucose_risk_plot }}" alt="Distribución de Glucosa y Riesgo de Ictus">
-        </div>
-        <div>
-            <h3>Distribución de Riesgo de Ictus por Género</h3>
-            <img src="data:image/png;base64,{{ plots.gender_risk_plot }}" alt="Distribución de Riesgo de Ictus por Género">
-        </div>
+    <div>
+        <h3>Cantidad de Pacientes con Alto Riesgo de Ictus por Edad</h3>
+        <img src="data:image/png;base64,{{ plots.age_stroke_plot }}" alt="Distribución de Stroke por Edad">
+    </div>
+    <div>
+        <h3>Cantidad de Pacientes con Alto Riesgo de Ictus por Nivel de Glucosa</h3>
+        <img src="data:image/png;base64,{{ plots.glucose_stroke_plot }}" alt="Distribución de Stroke por Nivel de Glucosa">
+    </div>
+    <div>
+        <h3>Cantidad de Pacientes con Alto Riesgo de Ictus y Hipertensión</h3>
+        <img src="data:image/png;base64,{{ plots.hypertension_stroke_plot }}" alt="Distribución de Stroke por Hipertensión">
+    </div>
+    <div>
+        <h3>Cantidad de Pacientes con Alto Riesgo de Ictus y Enfermedad Cardíaca</h3>
+        <img src="data:image/png;base64,{{ plots.heart_disease_stroke_plot }}" alt="Distribución de Stroke por Enfermedad Cardíaca">
+    </div>
     {% else %}
         <p>No se generaron gráficos.</p>
     {% endif %}
