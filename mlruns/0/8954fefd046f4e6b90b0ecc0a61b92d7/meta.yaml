@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/avkav/Documents/BootcampAI/ProyectoDataScientist-Grupo4/DATA-SCIENTIST-4/mlruns/0/8954fefd046f4e6b90b0ecc0a61b92d7/artifacts
+end_time: 1729839323959
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 8954fefd046f4e6b90b0ecc0a61b92d7
+run_name: dapper-rat-684
+run_uuid: 8954fefd046f4e6b90b0ecc0a61b92d7
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1729839316968
+status: 3
+tags: []
+user_id: avkav

@@ -1,0 +1,19 @@
+Informe Detallado del Modelo Neural Network para la Predicción de Ictus
+==================================================
+
+1. Arquitectura del Modelo
+
+2. Mejor Umbral Encontrado: 0.9200
+
+3. Métricas Finales del Modelo
+- Accuracy: 0.8415
+- Precision: 0.1351
+- Recall: 0.4000
+- F1: 0.2020
+- Auc_roc: 0.7422
+
+4. Métricas de Entrenamiento Final
+- Training Accuracy: 0.8089
+- Validation Accuracy: 1.0000
+- Training Loss: 0.3678
+- Validation Loss: 0.0291
