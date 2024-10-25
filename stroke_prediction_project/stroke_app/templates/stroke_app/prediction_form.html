@@ -2,24 +2,7 @@
 {% load static %}
 
 {% block content %}
-{% comment %} If we want a small hero area uncomment the following code: {% endcomment %}
-{% comment %} <div class="row mb-2">
-    <div class="col-md-12">
-        <h1 class="text-center fw-bolder bg-light p-3 rounded titulo">Stroke Prediction App</h1>
-    </div>    
-</div> {% endcomment %}
-
-{% comment %} If we want a video cover contained uncomment the following code: {% endcomment %}
-{% comment %} <div class="video-cover vid-container mb-2" style="margin-top: -7px;">
-    <video autoplay loop muted>
-        <source src="{% static 'media/brain4_pexels.mp4' %}" type="video/mp4" />
-    </video>
-    <div class="video-overlay">
-        <h1 class="text-center text-light fw-bolder rounded">Stroke Prediction App</h1>
-    </div>
-</div> {% endcomment %}
-
-<form method="post" class="row g-3">
+<form method="post" action="{% url 'predict_stroke' %}" class="row g-3">
     {% csrf_token %}
     
     <!-- Primera columna -->
@@ -27,26 +10,26 @@
         <div class="mb-3 p-3 bg-light border rounded">
             <h5 class="text-secondary fs-3">Patient Information</h5>
             <div class="mb-3">
-                <label for="{{ form.age.id_for_label }}" class="form-label fw-bold mb-0">Age</label>
+                <label for="age" class="form-label fw-bold mb-0">Age</label>
                 <div class="d-flex flex-column">
-                    <output id="age_output" class="text-center mb-1 text-secondary fs-5">50</output>  <!-- Muestra el valor por encima del slider -->
-                    {{ form.age }}
+                    <output id="age_output" class="text-center mb-1 text-secondary fs-5">50</output>
+                    <input type="range" id="age" name="age" min="0" max="100" value="50" class="form-range">
                 </div>
             </div>
 
             <div class="mb-3">
-                <label for="{{ form.avg_glucose_level.id_for_label }}" class="form-label fw-bold mb-0">Avg Glucose Level</label>
+                <label for="avg_glucose_level" class="form-label fw-bold mb-0">Avg Glucose Level</label>
                 <div class="d-flex flex-column">
-                    <output id="glucose_output" class="text-center mb-1 text-secondary fs-5">150</output>  <!-- Muestra el valor por encima del slider -->
-                    {{ form.avg_glucose_level }}
+                    <output id="glucose_output" class="text-center mb-1 text-secondary fs-5">150</output>
+                    <input type="range" id="avg_glucose_level" name="avg_glucose_level" min="50" max="200" value="150" class="form-range">
                 </div>
             </div>
 
             <div class="mb-3">
-                <label for="{{ form.bmi.id_for_label }}" class="form-label fw-bold mb-0">BMI</label>
+                <label for="bmi" class="form-label fw-bold mb-0">BMI</label>
                 <div class="d-flex flex-column">
-                    <output id="bmi_output" class="text-center mb-1 text-secondary fs-5">30</output>  <!-- Muestra el valor por encima del slider -->
-                    {{ form.bmi }}
+                    <output id="bmi_output" class="text-center mb-1 text-secondary fs-5">30</output>
+                    <input type="range" id="bmi" name="bmi" min="10" max="50" value="30" class="form-range">
                 </div>
             </div>
 
@@ -94,89 +77,81 @@
     </div>
 
     <div class="col-12 mt-0 text-center">
-        <button type="submit" class="btn btn-primary px-5 fw-bolder" data-bs-toggle="modal" data-bs-target="#exampleModal">Predict</button>
+        <button type="submit" class="btn btn-primary px-5 fw-bolder">Predict</button>
     </div>
 </form>
   
-  <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5 text-secondary" id="exampleModalLabel">Stroke Prediction</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <!-- Mostrar el resultado de la predicción -->
-            {% if risk %}
-            <div class="mt-3">
-                {% if risk == "yes" %}
-                    <div class="alert alert-warning fs-4">The individual <strong>is</strong> at risk of stroke!</div>
+<!-- Modal mejorado -->
+<div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="resultModalLabel">
+                    <i class="bi bi-heart-pulse"></i> Stroke Risk Prediction
+                </h5>
+                <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <h4 class="text-secondary">Stroke Risk: 
+                    <span class="fw-bold {% if risk == 'High' %}text-danger{% else %}text-success{% endif %}">
+                        {{ risk }}
+                    </span>
+                </h4>
+                <p class="fs-5 text-secondary">Probability: <span class="fw-bold">{{ probability }}</span></p>
+                
+                <!-- Barra de progreso para la probabilidad -->
+                <div class="progress my-4" style="height: 30px;">
+                    <div class="progress-bar {% if risk == 'High' %}bg-danger{% else %}bg-success{% endif %}" role="progressbar" 
+                        style="width: {{ probability }};" aria-valuenow="{{ probability }}" aria-valuemin="0" aria-valuemax="100">
+                        {{ probability }}
+                    </div>
+                </div>
+
+                <!-- Ícono visual de alerta -->
+                {% if risk == 'High' %}
+                    <div class="alert alert-danger fs-5 d-flex align-items-center" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill fs-4 me-2"></i>
+                        High Risk! Consider consulting your doctor.
+                    </div>
                 {% else %}
-                    <div class="alert alert-success fs-4">The individual <strong>is not</strong> at risk of stroke.</div>
+                    <div class="alert alert-success fs-5 d-flex align-items-center" role="alert">
+                        <i class="bi bi-check-circle-fill fs-4 me-2"></i>
+                        Low Risk. Keep maintaining a healthy lifestyle!
+                    </div>
                 {% endif %}
             </div>
-            {% endif %}
+            <div class="modal-footer d-flex justify-content-center">
+                <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">Close</button>
+            </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
-      </div>
     </div>
-  </div>
-
+</div>
+  
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Solo muestra el modal si se ha enviado el formulario y hay un riesgo
-        if ("{{ risk }}" !== "") {
-            var modal = new bootstrap.Modal(document.getElementById('exampleModal'));
-            modal.show();
-        }
-    });
-    document.addEventListener('DOMContentLoaded', function() {
-        // Obtener los sliders y los elementos de output para Age, Glucose y BMI
+        // Configuración de los sliders
+        function setupSlider(sliderId, outputId) {
+            const slider = document.getElementById(sliderId);
+            const output = document.getElementById(outputId);
 
-        const ageSlider = document.getElementById('{{ form.age.id_for_label }}');  // id del slider para la edad
-        const ageOutput = document.getElementById('age_output');
-        console.log('ageSlider:', ageSlider);  // Verificar si se encuentra el slider de edad
-        console.log('ageOutput:', ageOutput);  // Verificar si se encuentra el output de edad
-
-        if (ageSlider && ageOutput) {
-            ageOutput.innerText = ageSlider.value;  // Inicializa el valor del output basado en el valor actual del slider
-            ageSlider.addEventListener('input', function() {
-                ageOutput.innerText = this.value;  // Actualiza el valor del output cuando el slider se mueve
-            });
-        } else {
-            console.error('Elemento ageSlider o ageOutput no encontrado.');
+            if (slider && output) {
+                output.innerText = slider.value;
+                slider.addEventListener('input', function() {
+                    output.innerText = this.value;
+                });
+            }
         }
 
-        const glucoseSlider = document.getElementById('{{ form.avg_glucose_level.id_for_label }}');  // id del slider para la glucosa
-        const glucoseOutput = document.getElementById('glucose_output');
-        console.log('glucoseSlider:', glucoseSlider);  // Verificar si se encuentra el slider de glucosa
-        console.log('glucoseOutput:', glucoseOutput);  // Verificar si se encuentra el output de glucosa
+        // Inicializar sliders
+        setupSlider('age', 'age_output');
+        setupSlider('avg_glucose_level', 'glucose_output');
+        setupSlider('bmi', 'bmi_output');
 
-        if (glucoseSlider && glucoseOutput) {
-            glucoseOutput.innerText = glucoseSlider.value;  // Inicializa el valor del output basado en el valor actual del slider
-            glucoseSlider.addEventListener('input', function() {
-                glucoseOutput.innerText = this.value;  // Actualiza el valor del output cuando el slider se mueve
-            });
-        } else {
-            console.error('Elemento glucoseSlider o glucoseOutput no encontrado.');
-        }
-
-        const bmiSlider = document.getElementById('{{ form.bmi.id_for_label }}');  // id del slider para el BMI
-        const bmiOutput = document.getElementById('bmi_output');
-        console.log('bmiSlider:', bmiSlider);  // Verificar si se encuentra el slider de BMI
-        console.log('bmiOutput:', bmiOutput);  // Verificar si se encuentra el output de BMI
-
-        if (bmiSlider && bmiOutput) {
-            bmiOutput.innerText = bmiSlider.value;  // Inicializa el valor del output basado en el valor actual del slider
-            bmiSlider.addEventListener('input', function() {
-                bmiOutput.innerText = this.value;  // Actualiza el valor del output cuando el slider se mueve
-            });
-        } else {
-            console.error('Elemento bmiSlider o bmiOutput no encontrado.');
-        }
+        // Mostrar el modal si hay resultados
+        {% if show_result %}
+            const resultModal = new bootstrap.Modal(document.getElementById('resultModal'));
+            resultModal.show();
+        {% endif %}
     });
 </script>
 {% endblock %}

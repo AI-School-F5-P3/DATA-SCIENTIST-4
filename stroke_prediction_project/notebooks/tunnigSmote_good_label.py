@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split, cross_val_score, StratifiedKFold
-from sklearn.preprocessing import StandardScaler, OrdinalEncoder, OneHotEncoder, FunctionTransformer
+from sklearn.preprocessing import StandardScaler, LabelEncoder, FunctionTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
@@ -29,15 +29,20 @@ df = pd.read_csv('stroke_dataset.csv')
 cat_cols = ['gender', 'ever_married', 'Residence_type', 'work_type', 'smoking_status']  # Todas las variables categóricas
 num_cols = ['age', 'hypertension', 'heart_disease', 'avg_glucose_level', 'bmi']  # Variables numéricas
 
-# Preprocesamiento simplificado usando OrdinalEncoder
+# Aplicar LabelEncoder a cada columna categórica
+label_encoders = {}
+for col in cat_cols:
+    le = LabelEncoder()
+    df[col] = le.fit_transform(df[col])
+    label_encoders[col] = le
+
+# Preprocesamiento simplificado usando LabelEncoder
 preprocessor = ColumnTransformer(
     transformers=[
         # Escalar las variables numéricas
-        ('num', StandardScaler(), num_cols),
-        
-        # Aplicar OrdinalEncoder a todas las variables categóricas
-        ('cat', OrdinalEncoder(), cat_cols)
-    ]
+        ('num', StandardScaler(), num_cols)
+    ],
+    remainder='passthrough'  # Mantener las columnas categóricas ya codificadas
 )
 
 # Separar características y objetivo
@@ -98,13 +103,11 @@ for name, model in models.items():
 
 print(f"\nBest model: {best_model[0]} with AUC = {best_auc:.4f}")
 
-
 # Optimización de hiperparámetros con Optuna
 def objective(trial):
     if best_model[0] == 'Logistic Regression':
         solver = trial.suggest_categorical('solver', ['lbfgs', 'liblinear'])
         
-        # Asegurar que la penalización es compatible con el solver
         if solver == 'liblinear':
             penalty = trial.suggest_categorical('penalty', ['l1', 'l2'])
         else:
@@ -148,12 +151,10 @@ def objective(trial):
     
     pipeline = create_pipeline(classifier)
     
-# Configuración de StratifiedKFold
     skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
     auc_scores = []
     
     for train_index, val_index in skf.split(X_train, y_train):
-        # Uso de iloc para obtener las filas correctas
         X_train_fold, X_val_fold = X_train.iloc[train_index], X_train.iloc[val_index]
         y_train_fold, y_val_fold = y_train.iloc[train_index], y_train.iloc[val_index]
         
@@ -168,13 +169,13 @@ def objective(trial):
 study = optuna.create_study(direction='maximize')
 study.optimize(objective, n_trials=100)
 
-
 # Entrenar el mejor modelo con los mejores hiperparámetros
 best_params = study.best_params
 best_classifier = models[best_model[0]]
 best_classifier.set_params(**best_params)
 best_pipeline = create_pipeline(best_classifier)
 best_pipeline.fit(X_train, y_train)
+
 # Evaluar el modelo optimizado
 y_pred_optimized = best_pipeline.predict(X_test)
 y_pred_proba_optimized = best_pipeline.predict_proba(X_test)[:, 1]
@@ -193,23 +194,6 @@ overfitting = train_auc - metrics_optimized['auc']
 print(f"\nTrain AUC: {train_auc:.4f}")
 print(f"Overfitting: {overfitting:.4f}")
 
-# Crear el diccionario con el modelo y los preprocesadores
-full_pipeline = {
-    'model': best_pipeline,  # El pipeline que incluye SMOTE y el modelo optimizado
-    'scaler': preprocessor.named_transformers_['num'],  # StandardScaler para las variables numéricas
-    'encoder': preprocessor.named_transformers_['cat']  # OrdinalEncoder para las variables categóricas
-}
-
-# Guardar el pipeline completo en un solo archivo pickle
-joblib.dump(full_pipeline, 'full_stroke_prediction_pipeline.pkl')
+# Guardar el pipeline completo en un archivo pickle
+joblib.dump(best_pipeline, 'full_stroke_prediction_pipeline.pkl')
 print(f"\nFull pipeline saved as: 'full_stroke_prediction_pipeline.pkl'")
-
-# # Guardar el mejor modelo en un archivo pickle
-# best_model_filename = f'best_stroke_prediction_model_{best_model[0].replace(" ", "_").lower()}.pkl'
-# joblib.dump(best_pipeline, best_model_filename)
-# print(f"\nBest model saved as: {best_model_filename}")
-
-# # Guardar el preprocesador en un archivo pickle
-# preprocessor_filename = 'best_stroke_preprocessor.pkl'
-# joblib.dump(preprocessor, preprocessor_filename)
-# print(f"Preprocessor saved as: {preprocessor_filename}")
