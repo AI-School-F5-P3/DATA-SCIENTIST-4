@@ -1,11 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resultados de Predicción</title>
-</head>
-<body>
+{% extends 'stroke_app/base.html' %}
+{% load static %}
+
+{% block content %}
     <h1>Resultados de la Predicción de Riesgo de Ictus</h1>
     
     <h2>Gráficos Generados:</h2>
@@ -25,5 +21,4 @@
     {% else %}
         <p>No se generaron gráficos.</p>
     {% endif %}
-</body>
-</html>
+    {% endblock %}
