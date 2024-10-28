@@ -158,6 +158,6 @@ celerybeat.pid
 __pycache__/
 
 # Ignore folder with brain images
-Brain_Data_Organised/
+stroke_prediction_project/notebooks/Brain_Data_Organised/
 
 
