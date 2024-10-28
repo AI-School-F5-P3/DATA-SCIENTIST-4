@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
-import pymysql
+import pymysql #pip install pymysql
 # Cargar variables de entorno desde un archivo .env
 load_dotenv()
 
@@ -90,7 +90,7 @@ DATABASES = {
         'USER': os.getenv('DB_USER'),  # Lee el usuario desde .env
         'PASSWORD': os.getenv('DB_PASSWORD'),  # Lee la contraseña desde .env
         'HOST': 'localhost',  # Si ejecutamos desde docker poner 'db', si no, 'localhost'
-        'PORT': os.getenv('DB_PORT', '3306'),  # Lee el puerto desde .env
+        'PORT': os.getenv('DB_PORT', '3308'),  # Lee el puerto desde .env
     }
 }
 
