@@ -1,5 +1,9 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+
+# Large Files
+stroke_prediction_project/notebooks/model_brain_stroke.h5
+
 # Environments
 .env
 .venv
