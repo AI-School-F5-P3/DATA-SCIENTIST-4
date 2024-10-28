@@ -157,5 +157,7 @@ celerybeat.pid
 # Ignore pycache
 __pycache__/
 
+# Ignore folder with brain images
+Brain_Data_Organised/
 
 
