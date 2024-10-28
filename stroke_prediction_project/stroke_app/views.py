@@ -15,6 +15,17 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import threading
+import tensorflow as tf
+from PIL import Image
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report, precision_score, recall_score, f1_score, roc_auc_score
+import os
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder, StandardScaler
+from sklearn.compose import ColumnTransformer
+from imblearn.over_sampling import SMOTE
+from imblearn.pipeline import Pipeline as ImbPipeline
+from sklearn.linear_model import LogisticRegression
+import io
 
 def load_model():
     model_path = settings.MODEL_PATH
@@ -104,6 +115,7 @@ def predict_stroke(request):
     
     return render(request, 'stroke_app/prediction_form.html', context)
 
+# Función para la carga masiva de registros en un csv
 def upload_csv_and_predict(request):
     if request.method == 'POST' and request.FILES['file']:
         file = request.FILES['file']
@@ -124,7 +136,8 @@ def upload_csv_and_predict(request):
 
             # Agregar predicciones al DataFrame
             df['stroke_risk'] = predictions
-
+            
+            # Almacenar los resultados en la base de datos
             for _, row in df.iterrows():
                 StrokePrediction.objects.create(
                     gender=row['gender'],
@@ -147,15 +160,14 @@ def upload_csv_and_predict(request):
 
     return render(request, 'stroke_app/upload.html')
 
-def create_plots(data, plots):
+# Función para la creación de los gráficos
+def create_plots(data, plots, total_records, stroke_cases):
     # Gráfico 1: Distribución de Stroke por Rango de Edad
     plt.figure(figsize=(10, 6))
-    sns.countplot(data=data[data['stroke_risk'] == 'High'], x='age', palette='Blues')
-    plt.title("Cantidad de Pacientes con Alto Riesgo de Ictus por Edad")
+    sns.countplot(data=data[data['stroke_risk'] == 'High'], x='age', hue='stroke_risk', palette='Blues', legend=False)
+    plt.title("Cantidad de Pacientes con Alto Riesgo de Ictus por Edad", fontweight='bold')
     plt.xlabel("Edad")
     plt.ylabel("Cantidad de Casos de Ictus")
-    
-    # Guardar el gráfico en base64
     buffer = BytesIO()
     plt.savefig(buffer, format='png')
     buffer.seek(0)
@@ -164,43 +176,55 @@ def create_plots(data, plots):
 
     # Gráfico 2: Distribución de Stroke por Nivel de Glucosa
     plt.figure(figsize=(10, 6))
-    sns.countplot(data=data[data['stroke_risk'] == 'High'], x='avg_glucose_level', palette='Blues')
-    plt.title("Cantidad de Pacientes con Alto Riesgo de Ictus por Nivel de Glucosa")
+    sns.countplot(data=data[data['stroke_risk'] == 'High'], x='avg_glucose_level', hue='stroke_risk', palette='Blues', legend=False)
+    plt.title("Cantidad de Pacientes con Alto Riesgo de Ictus por Nivel de Glucosa", fontweight='bold')
     plt.xlabel("Nivel de Glucosa Promedio")
     plt.ylabel("Cantidad de Casos de Ictus")
-    
     buffer = BytesIO()
     plt.savefig(buffer, format='png')
     buffer.seek(0)
     plots['glucose_stroke_plot'] = base64.b64encode(buffer.getvalue()).decode('utf-8')
     plt.close()
 
-    # Gráfico 3: Distribución de Stroke por Hipertensión
+    # Gráfico 3: Total de Registros vs Casos de Ictus
     plt.figure(figsize=(8, 5))
-    sns.countplot(data=data[data['stroke_risk'] == 'High'], x='hypertension', palette='Blues')
-    plt.title("Cantidad de Pacientes con Alto Riesgo de Ictus y Hipertensión")
+    x_labels = ['Total Registros', 'Casos de Ictus']
+    y_values = [total_records, stroke_cases]
+    sns.barplot(x=x_labels, y=y_values, palette=['#4a90e2', '#d9534f'], ci=None)
+    plt.title("Total de Registros y Casos de Ictus", fontweight='bold')
+    plt.ylabel("Cantidad")
+    plt.xlabel("Categorías")
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    plots['stroke_percentage_plot'] = base64.b64encode(buffer.getvalue()).decode('utf-8')
+    plt.close()
+
+    # Gráfico 4: Distribución de Stroke por Hipertensión
+    plt.figure(figsize=(8, 5))
+    sns.countplot(data=data[data['stroke_risk'] == 'High'], x='hypertension', hue='stroke_risk', palette='Blues', legend=False)
+    plt.title("Cantidad de Pacientes con Alto Riesgo de Ictus y Hipertensión", fontweight='bold')
     plt.xlabel("Hipertensión (0 = No, 1 = Sí)")
     plt.ylabel("Cantidad de Casos de Ictus")
-
     buffer = BytesIO()
     plt.savefig(buffer, format='png')
     buffer.seek(0)
     plots['hypertension_stroke_plot'] = base64.b64encode(buffer.getvalue()).decode('utf-8')
     plt.close()
 
-    # Gráfico 4: Distribución de Stroke por Enfermedad Cardíaca
+    # Gráfico 5: Distribución de Stroke por Enfermedad Cardíaca
     plt.figure(figsize=(8, 5))
-    sns.countplot(data=data[data['stroke_risk'] == 'High'], x='heart_disease', palette='Blues')
-    plt.title("Cantidad de Pacientes con Alto Riesgo de Ictus y Enfermedad Cardíaca")
+    sns.countplot(data=data[data['stroke_risk'] == 'High'], x='heart_disease', hue='stroke_risk', palette='Blues', legend=False)
+    plt.title("Cantidad de Pacientes con Alto Riesgo de Ictus y Enfermedad Cardíaca", fontweight='bold')
     plt.xlabel("Enfermedad Cardíaca (0 = No, 1 = Sí)")
     plt.ylabel("Cantidad de Casos de Ictus")
-
     buffer = BytesIO()
     plt.savefig(buffer, format='png')
     buffer.seek(0)
     plots['heart_disease_stroke_plot'] = base64.b64encode(buffer.getvalue()).decode('utf-8')
     plt.close()
 
+# Función para la visualización de los gráficos una vez subida la carga masiva
 def success_view(request):
     # Carga los datos desde el modelo
     predictions = StrokePrediction.objects.all()
@@ -211,12 +235,209 @@ def success_view(request):
     # Filtrar solo las categorías que deseas
     data = data[data['stroke_risk'].isin(['High', 'Low'])]
 
+    # Calcular total de registros y porcentaje de ictus
+    total_records = len(data)
+    stroke_percentage = (data[data['stroke_risk'] == 'High'].shape[0] / total_records) * 100
+    
     # Configura los gráficos
     plots = {}
 
     # Crear los gráficos en un hilo separado
-    plot_thread = threading.Thread(target=create_plots, args=(data, plots))
+    plot_thread = threading.Thread(target=create_plots, args=(data, plots, total_records, stroke_percentage))
     plot_thread.start()
-    plot_thread.join()  # Espera a que el hilo termine
+    plot_thread.join()
 
     return render(request, 'stroke_app/success.html', {'plots': plots})
+
+###### CNN Model ######
+# Cargar el modelo preentrenado de imágenes
+def load_image_model():
+    model_path = settings.IMAGE_MODEL_PATH  # Configura la ruta en settings.py
+    try:
+        return tf.keras.models.load_model(model_path)
+    except Exception as e:
+        print(f"Error loading image model: {e}")
+        return None
+
+image_model = load_image_model()
+
+# Nueva vista para predecir el ictus en una imagen
+def predict_image_stroke(request):
+    if request.method == 'POST' and request.FILES.get('image'):
+        image_file = request.FILES['image']
+        
+        # Procesar la imagen para que sea compatible con el modelo
+        try:
+            image = Image.open(image_file)
+            image = image.convert('RGB')  # Asegurarse de que la imagen sea RGB
+            image = image.resize((224, 224))  # Tamaño de entrada del modelo
+            image = np.array(image) / 255.0  # Normalización de la imagen
+            image = np.expand_dims(image, axis=0)  # Añadir dimensión batch
+            
+            # Realizar predicción con el modelo
+            prediction = image_model.predict(image)[0][0]
+            
+            # Aquí puedes ajustar el umbral o añadir una lógica más elaborada
+            if prediction >= 0.5:
+                stroke_prediction = 'Stroke Detected'
+            elif prediction >= 0.3:  # Un umbral menor para "No seguro"
+                stroke_prediction = 'Unsure, not a clear stroke indication'
+            else:
+                stroke_prediction = 'No Stroke Detected'
+            
+            # Añadir resultados al contexto
+            context = {
+                'stroke_prediction': stroke_prediction,
+                'prediction_confidence': f"{prediction:.2%}"
+            }
+            return render(request, 'stroke_app/upload_image.html', context)
+
+        except Exception as e:
+            print(f"Error processing image: {e}")
+            return render(request, 'stroke_app/upload_image.html', {'error': 'Error processing the image.'})
+    
+    return render(request, 'stroke_app/upload_image.html')
+
+#### Reporte de métricas ####
+# def train_stroke_model: Function that handles all the model training and evaluation logic
+def train_stroke_model():
+    """
+    Trains the stroke prediction model and returns the model metrics and visualizations
+    """
+    # Load the dataset
+    df = pd.read_csv(settings.DATASET_PATH)
+    
+    # Define columns
+    cat_cols = ['gender', 'ever_married', 'Residence_type', 'work_type', 'smoking_status']
+    num_cols = ['age', 'hypertension', 'heart_disease', 'avg_glucose_level', 'bmi']
+    
+    # Apply LabelEncoder to categorical columns
+    label_encoders = {}
+    for col in cat_cols:
+        le = LabelEncoder()
+        df[col] = le.fit_transform(df[col])
+        label_encoders[col] = le
+    
+    # Create preprocessor
+    preprocessor = ColumnTransformer(
+        transformers=[
+            ('num', StandardScaler(), num_cols)
+        ],
+        remainder='passthrough'
+    )
+    
+    # Prepare features and target
+    X = df[cat_cols + num_cols]
+    y = df['stroke']
+    
+    # Split the data
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    
+    # Create and train pipeline
+    pipeline = ImbPipeline([
+        ('preprocessor', preprocessor),
+        ('smote', SMOTE(random_state=42)),
+        ('classifier', LogisticRegression(random_state=42))
+    ])
+    
+    pipeline.fit(X_train, y_train)
+    
+    # Make predictions
+    y_pred = pipeline.predict(X_test)
+    y_pred_proba = pipeline.predict_proba(X_test)[:, 1]
+    
+    # Calculate metrics
+    metrics = {
+        'accuracy': accuracy_score(y_test, y_pred),
+        'precision': precision_score(y_test, y_pred),
+        'recall': recall_score(y_test, y_pred),
+        'f1': f1_score(y_test, y_pred),
+        'auc': roc_auc_score(y_test, y_pred_proba)
+    }
+    
+    # Generate confusion matrix plot
+    cm = confusion_matrix(y_test, y_pred)
+    plt.figure(figsize=(8, 6))
+    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
+    plt.title('Confusion Matrix')
+    plt.ylabel('True Label')
+    plt.xlabel('Predicted Label')
+    
+    # Save confusion matrix plot to base64
+    buffer = io.BytesIO()
+    plt.savefig(buffer, format='png', bbox_inches='tight')
+    buffer.seek(0)
+    cm_image = base64.b64encode(buffer.getvalue()).decode()
+    plt.close()
+    
+    ## Determine feature importance ##
+    # Extraer el clasificador del pipeline
+    classifier = pipeline.named_steps['classifier']
+    X_train_transformed = pipeline.named_steps['preprocessor'].transform(X_train)
+    
+    # Obtener los nombres de las características después del preprocesamiento
+    feature_names = num_cols + cat_cols
+
+    feature_importance = pd.DataFrame(columns=['feature', 'importance'])  # Inicialización
+    feature_image = ''  # Imagen de importancia de características inicializada
+    
+    # Comprobar si el clasificador tiene atributo de importancia de características
+    if hasattr(classifier, 'feature_importances_'):
+        # For classifiers like RandomForest, XGBoost, LightGBM
+        importances = classifier.feature_importances_
+    elif hasattr(classifier, 'coef_'):
+        # For linear classifiers like Logistic Regression
+        importances = np.abs(classifier.coef_[0])
+    else:
+        print("Feature importance not available for this classifier.")
+        importances = None
+
+    # Generate feature importance plot if available
+    if importances is not None:
+        feature_importance_df = pd.DataFrame({
+            'feature': feature_names,
+            'importance': importances
+        }).sort_values('importance', ascending=False)
+        
+        plt.figure(figsize=(10, 6))
+        sns.barplot(x='importance', y='feature', data=feature_importance_df[:10])
+        plt.title('Top 10 Feature Importance')
+        plt.xlabel('Importance')
+        
+        # Save feature importance plot to base64
+        buffer = io.BytesIO()
+        plt.savefig(buffer, format='png', bbox_inches='tight')
+        buffer.seek(0)
+        feature_image = base64.b64encode(buffer.getvalue()).decode()
+        plt.close()
+    else:
+        feature_importance_df = pd.DataFrame(columns=['feature', 'importance'])
+        feature_image = ''  # Imagen vacía si no hay importancia de características
+        
+    # Save the model
+    model_path = os.path.join(settings.BASE_DIR, 'models', 'stroke_prediction_model.pkl')
+    os.makedirs(os.path.dirname(model_path), exist_ok=True)
+    joblib.dump(pipeline, model_path)
+    
+    return {
+        'metrics': metrics,
+        'confusion_matrix': cm_image,
+        'feature_importance': feature_image,
+        'top_features': feature_importance_df.to_dict('records')  # Asegurar que contiene los datos correctos
+    }
+
+# The actual view function that calls the training function and renders the template
+def stroke_report(request):
+    """
+    View function to display the stroke prediction model report
+    """
+    results = train_stroke_model()
+    
+    context = {
+        'metrics': results['metrics'],
+        'confusion_matrix': results['confusion_matrix'],
+        'feature_importance': results['feature_importance'],
+        'top_features': results['top_features']
+    }
+    
+    return render(request, 'stroke_app/reports.html', context)

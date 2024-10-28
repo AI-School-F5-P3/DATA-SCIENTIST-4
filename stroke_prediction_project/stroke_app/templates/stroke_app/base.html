@@ -12,7 +12,7 @@
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg">
+    <nav class="navbar navbar-expand-lg sticky-top">
         <div class="container">
             <!-- Logo and Brand Name -->
             <a class="navbar-brand logo" href="{% url 'predict_stroke' %}">
@@ -24,17 +24,35 @@
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
+                    <!-- Definir variables de URL -->
+                    {% url 'predict_stroke' as predict_stroke_url %}
+                    {% url 'upload_image' as upload_image_url %}
+                    {% url 'upload' as upload_url %}
+                    {% url 'stroke_report' as stroke_report_url %}
+
                     <li class="nav-item">
-                        <a class="nav-link me-5 fw-bold" href="#">Predicción de Imágenes</a>
+                        <a href="{{ predict_stroke_url }}" class="nav-link me-5 fw-bold {% if request.path == predict_stroke_url %}active{% endif %}">Stroke Prediction</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ upload_image_url }}" class="nav-link me-5 fw-bold {% if request.path == upload_image_url %}active{% endif %}">Image Detection</a>
                     </li>
                     <li class="nav-item fw-bold">
-                        <a href="{% url 'upload' %}" class="nav-link me-5">Carga Masiva</a>
+                        <a href="{{ upload_url }}" class="nav-link me-5 {% if request.path == upload_url %}active{% endif %}">Bulk Upload</a>
                     </li>
+                    {% if user.is_staff %}
                     <li class="nav-item">
-                        <a class="nav-link me-5 fw-bold" href="#">Quienes somos</a>
+                        <a href="{{ stroke_report_url }}" class="nav-link me-5 fw-bold {% if request.path == stroke_report_url %}active{% endif %}">Reports</a>
                     </li>
+                    {% endif %}
                     <li class="nav-item">
-                        <a class="nav-link fw-bold" href="#">Contacto</a>
+                        {% if user.is_authenticated %}
+                            <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="nav-link fw-bold btn btn-login">Logout</button>
+                            </form>
+                        {% else %}
+                            <a class="nav-link fw-bold btn btn-login" href="/admin/login/">Login</a>
+                        {% endif %}
                     </li>
                 </ul>
             </div>
@@ -43,10 +61,25 @@
     <!-- Video Cover -->
     <div class="video-cover vid-container mb-2">
         <video autoplay loop muted>
-            <source src="{% static 'media/brain4_pexels.mp4' %}" type="video/mp4" />
+            {% url 'predict_stroke' as predict_stroke_url %}
+            {% url 'upload_image' as upload_image_url %}
+            {% url 'upload' as upload_url %}
+            {% url 'stroke_report' as stroke_report_url %}
+
+            {% if request.path == predict_stroke_url %}
+                <source src="{% static 'media/brain4_pexels.mp4' %}" type="video/mp4" />
+            {% elif request.path == upload_image_url %}
+                <source src="{% static 'media/brain2_pexels.mp4' %}" type="video/mp4" />
+            {% elif request.path == upload_url %}
+                <source src="{% static 'media/bulk_upload.mp4' %}" type="video/mp4" />
+            {% elif request.path == stroke_report_url %}
+                <source src="{% static 'media/report.mp4' %}" type="video/mp4" />
+            {% else %}
+                <source src="{% static 'media/brain4_pexels.mp4' %}" type="video/mp4" />
+            {% endif %}
         </video>
         <div class="video-overlay">
-            <h1 class="text-center text-light fw-bolder rounded">Stroke Prediction App</h1>
+            <h1 class="text-center text-light fw-bolder rounded">Stroke App</h1>
         </div>
     </div>
     <!-- Main Content -->

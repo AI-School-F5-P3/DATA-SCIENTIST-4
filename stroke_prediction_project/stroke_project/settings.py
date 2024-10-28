@@ -144,5 +144,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MODEL_PATH = os.path.join(BASE_DIR, 'notebooks', 'full_stroke_prediction_pipeline.pkl')
 
-MLFLOW_TRACKING_URI = 'http://localhost:5000'  # Cambia a la URL de tu servidor MLflow si lo necesitas
+IMAGE_MODEL_PATH = os.path.join(BASE_DIR, 'notebooks', 'model_brain_stroke.h5')
 
+DATASET_PATH = os.path.join(BASE_DIR, 'notebooks', 'stroke_dataset.csv')
+
+MLFLOW_TRACKING_URI = 'http://localhost:5000'  # Cambia a la URL de tu servidor MLflow si lo necesitas

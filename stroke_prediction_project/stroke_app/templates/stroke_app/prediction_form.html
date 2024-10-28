@@ -21,7 +21,7 @@
                 <label for="avg_glucose_level" class="form-label fw-bold mb-0">Avg Glucose Level</label>
                 <div class="d-flex flex-column">
                     <output id="glucose_output" class="text-center mb-1 text-secondary fs-5">150</output>
-                    <input type="range" id="avg_glucose_level" name="avg_glucose_level" min="50" max="200" value="150" class="form-range">
+                    <input type="range" id="avg_glucose_level" name="avg_glucose_level" min="50" max="300" value="150" class="form-range">
                 </div>
             </div>
 
@@ -126,6 +126,34 @@
         </div>
     </div>
 </div>
+
+<!-- Sección de recomendaciones -->
+<div id="recommendations" class="recommendations mt-4" style="display: none; opacity: 0; transition: opacity 0.5s;">
+    {% if risk == 'High' %}
+    <div class="alert alert-danger">
+        <h4>Recommendations:</h4>
+        
+            <ul>
+                <li>Follow a balanced diet rich in fruits and vegetables.</li>
+                <li>Consult your doctor for a detailed assessment.</li>
+                <li>Engage in regular physical activity.</li>
+                <li>Manage stress through relaxation techniques.</li>
+                <li>Stay hydrated and limit salt intake.</li>
+            </ul>
+        {% else %}
+        <div class="alert alert-info">
+            <h4>Recommendations:</h4>
+            <ul>
+                <li>Continue to maintain a healthy diet.</li>
+                <li>Stay active with regular exercise.</li>
+                <li>Keep monitoring your health indicators.</li>
+                <li>Manage stress through hobbies and relaxation.</li>
+                <li>Consider regular check-ups with your doctor.</li>
+            </ul>
+        
+    </div>
+    {% endif %}
+</div>
   
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -148,10 +176,21 @@
         setupSlider('bmi', 'bmi_output');
 
         // Mostrar el modal si hay resultados
-        {% if show_result %}
-            const resultModal = new bootstrap.Modal(document.getElementById('resultModal'));
+        const resultModalElement = document.getElementById('resultModal');
+        if (resultModalElement && {{ show_result|yesno:"true,false" }}) {
+            const resultModal = new bootstrap.Modal(resultModalElement);
             resultModal.show();
-        {% endif %}
+        }
+
+        // Mostrar recomendaciones al cerrar el modal
+        resultModalElement.addEventListener('hidden.bs.modal', function () {
+            const recommendations = document.getElementById('recommendations');
+            recommendations.style.display = 'block'; // Mostrar la sección
+            setTimeout(() => {
+                recommendations.style.opacity = '1'; // Hacerla visible
+            }, 10); // Tiempo para asegurar que el estilo se aplique
+        });
+
     });
 </script>
 {% endblock %}

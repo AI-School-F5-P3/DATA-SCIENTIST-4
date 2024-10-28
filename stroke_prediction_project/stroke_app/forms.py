@@ -12,8 +12,8 @@ class StrokePredictionForm(forms.Form):
     )
     avg_glucose_level = forms.FloatField(
         min_value=50, 
-        max_value=250, 
-        widget=RangeInput(attrs={'class': 'form-range', 'value': 150, 'oninput': 'this.nextElementSibling.value = this.value', 'min': 50, 'max': 250}),
+        max_value=300, 
+        widget=RangeInput(attrs={'class': 'form-range', 'value': 150, 'oninput': 'this.nextElementSibling.value = this.value', 'min': 50, 'max': 300}),
         label="Avg Glucose Level"
     )
     bmi = forms.FloatField(

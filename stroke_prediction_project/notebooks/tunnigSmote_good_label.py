@@ -1,8 +1,7 @@
 import pandas as pd
 import numpy as np
-from sklearn.model_selection import train_test_split, cross_val_score, StratifiedKFold
-from sklearn.preprocessing import StandardScaler, LabelEncoder, FunctionTransformer
-from sklearn.impute import SimpleImputer
+from sklearn.model_selection import train_test_split, StratifiedKFold
+from sklearn.preprocessing import StandardScaler, LabelEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, confusion_matrix, roc_curve
@@ -15,7 +14,6 @@ from imblearn.over_sampling import SMOTE
 from imblearn.pipeline import Pipeline as ImbPipeline
 import matplotlib.pyplot as plt
 import optuna
-import pickle
 import joblib
 import mlflow
 import mlflow.sklearn
@@ -197,3 +195,20 @@ print(f"Overfitting: {overfitting:.4f}")
 # Guardar el pipeline completo en un archivo pickle
 joblib.dump(best_pipeline, 'full_stroke_prediction_pipeline.pkl')
 print(f"\nFull pipeline saved as: 'full_stroke_prediction_pipeline.pkl'")
+
+# Visualizar matriz de confusión
+cm = confusion_matrix(y_test, y_pred_optimized)
+plt.figure(figsize=(6, 4))
+plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
+plt.title('Confusion Matrix')
+plt.colorbar()
+tick_marks = np.arange(2)
+plt.xticks(tick_marks, ['No Stroke', 'Stroke'])
+plt.yticks(tick_marks, ['No Stroke', 'Stroke'])
+plt.tight_layout()
+plt.ylabel('True label')
+plt.xlabel('Predicted label')
+for i in range(2):
+    for j in range(2):
+        plt.text(j, i, str(cm[i, j]), horizontalalignment="center", color="white" if cm[i, j] > cm.max() / 2 else "black")
+plt.show()
