@@ -161,4 +161,4 @@ __pycache__/
 stroke_prediction_project/notebooks/Brain_Data_Organised/
 
 # Ignore .h5 files
-.h5
+*.h5

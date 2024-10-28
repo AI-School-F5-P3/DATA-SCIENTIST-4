@@ -164,7 +164,7 @@ def upload_csv_and_predict(request):
 def create_plots(data, plots, total_records, stroke_cases):
     # Gráfico 1: Distribución de Stroke por Rango de Edad
     plt.figure(figsize=(10, 6))
-    sns.countplot(data=data[data['stroke_risk'] == 'High'], x='age', hue='stroke_risk', palette='Blues', legend=False)
+    sns.histplot(data=data[data['stroke_risk'] == 'High'], x='age', bins=20, kde=True, color='skyblue')
     plt.title("Cantidad de Pacientes con Alto Riesgo de Ictus por Edad", fontweight='bold')
     plt.xlabel("Edad")
     plt.ylabel("Cantidad de Casos de Ictus")
@@ -176,7 +176,7 @@ def create_plots(data, plots, total_records, stroke_cases):
 
     # Gráfico 2: Distribución de Stroke por Nivel de Glucosa
     plt.figure(figsize=(10, 6))
-    sns.countplot(data=data[data['stroke_risk'] == 'High'], x='avg_glucose_level', hue='stroke_risk', palette='Blues', legend=False)
+    sns.histplot(data=data[data['stroke_risk'] == 'High'], x='avg_glucose_level', bins=20, kde=True, color='skyblue')
     plt.title("Cantidad de Pacientes con Alto Riesgo de Ictus por Nivel de Glucosa", fontweight='bold')
     plt.xlabel("Nivel de Glucosa Promedio")
     plt.ylabel("Cantidad de Casos de Ictus")
@@ -190,7 +190,7 @@ def create_plots(data, plots, total_records, stroke_cases):
     plt.figure(figsize=(8, 5))
     x_labels = ['Total Registros', 'Casos de Ictus']
     y_values = [total_records, stroke_cases]
-    sns.barplot(x=x_labels, y=y_values, palette=['#4a90e2', '#d9534f'], ci=None)
+    sns.barplot(x=x_labels, y=y_values, palette=['#4a90e2', '#d9534f'])
     plt.title("Total de Registros y Casos de Ictus", fontweight='bold')
     plt.ylabel("Cantidad")
     plt.xlabel("Categorías")
@@ -202,7 +202,7 @@ def create_plots(data, plots, total_records, stroke_cases):
 
     # Gráfico 4: Distribución de Stroke por Hipertensión
     plt.figure(figsize=(8, 5))
-    sns.countplot(data=data[data['stroke_risk'] == 'High'], x='hypertension', hue='stroke_risk', palette='Blues', legend=False)
+    sns.countplot(data=data[data['stroke_risk'] == 'High'], x='hypertension', palette='Blues')
     plt.title("Cantidad de Pacientes con Alto Riesgo de Ictus y Hipertensión", fontweight='bold')
     plt.xlabel("Hipertensión (0 = No, 1 = Sí)")
     plt.ylabel("Cantidad de Casos de Ictus")
@@ -214,7 +214,7 @@ def create_plots(data, plots, total_records, stroke_cases):
 
     # Gráfico 5: Distribución de Stroke por Enfermedad Cardíaca
     plt.figure(figsize=(8, 5))
-    sns.countplot(data=data[data['stroke_risk'] == 'High'], x='heart_disease', hue='stroke_risk', palette='Blues', legend=False)
+    sns.countplot(data=data[data['stroke_risk'] == 'High'], x='heart_disease', palette='Blues')
     plt.title("Cantidad de Pacientes con Alto Riesgo de Ictus y Enfermedad Cardíaca", fontweight='bold')
     plt.xlabel("Enfermedad Cardíaca (0 = No, 1 = Sí)")
     plt.ylabel("Cantidad de Casos de Ictus")
@@ -235,15 +235,15 @@ def success_view(request):
     # Filtrar solo las categorías que deseas
     data = data[data['stroke_risk'].isin(['High', 'Low'])]
 
-    # Calcular total de registros y porcentaje de ictus
+    # Calcular total de registros y casos de ictus
     total_records = len(data)
-    stroke_percentage = (data[data['stroke_risk'] == 'High'].shape[0] / total_records) * 100
+    stroke_cases = data[data['stroke_risk'] == 'High'].shape[0]
     
     # Configura los gráficos
     plots = {}
 
     # Crear los gráficos en un hilo separado
-    plot_thread = threading.Thread(target=create_plots, args=(data, plots, total_records, stroke_percentage))
+    plot_thread = threading.Thread(target=create_plots, args=(data, plots, total_records, stroke_cases))
     plot_thread.start()
     plot_thread.join()
 
@@ -337,7 +337,12 @@ def train_stroke_model():
     pipeline = ImbPipeline([
         ('preprocessor', preprocessor),
         ('smote', SMOTE(random_state=42)),
-        ('classifier', LogisticRegression(random_state=42))
+        ('classifier', LogisticRegression(
+            solver='liblinear', 
+            penalty='l1', 
+            C=0.012557614443376395, 
+            random_state=42
+        ))
     ])
     
     pipeline.fit(X_train, y_train)
