@@ -116,6 +116,14 @@ Para el día de la reunión, será necesario entregar:
 │   ├── __init__.py         # Hace que la carpeta tests sea un paquete Python
 │   └── test_model.py       # Pruebas para el modelo
 │
+├── /stroke_prediction_project/ # Django Project
+│   ├── models         # Hace que la carpeta tests sea un paquete Python
+│   └── notebooks      # Desarrollo de modelos para ser consumidos por el Django
+|   └── stroke_app     # contiene la app de Django
+|   └── stroke_project # Contiene las configuraciones generales (archivos asgi.py y wsgi.py serán utilizados para lanzamiento en cloud)
+|   └── manage.py     # ejecutar: python manage.py runserver (equivalente a stremlit run)
+|
+│
 ├── .gitignore               # Archivos y carpetas que Git debe ignorar
 ├── README.md                # Archivo README del proyecto
 ├── setup.py                 # Script de instalación (si es necesario)
